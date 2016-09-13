@@ -1,0 +1,5 @@
+{
+  "presets": [["es2015", {"modules": false, "loose": true}], "stage-0", "react"],
+  "plugins": ["react-hot-loader/babel", "transform-class-properties", "transform-object-rest-spread"],
+  "ignore": ["node_modules"]
+}
