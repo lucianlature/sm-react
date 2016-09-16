@@ -5,3 +5,6 @@ dist
 .module-cache
 *.log*
 _nogit
+.idea
+.idea/inspectionProfiles/
+.idea/vcs.xml

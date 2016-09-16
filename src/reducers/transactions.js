@@ -5,7 +5,7 @@ import {
   DELETE_TRANSACTION,
   GET_TRANSACTION_GRID_FIELDS,
   REQUEST_SUM,
-} from 'actions';
+} from '../actions';
 
 import {
   defaultTransactions,

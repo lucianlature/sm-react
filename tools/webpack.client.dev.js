@@ -1,24 +1,32 @@
 const path = require('path');
 const webpack = require('webpack');
 const CONFIG = require('./webpack.base');
-const nodeEnv = process.env.NODE_ENV || 'development';
-const isProd = nodeEnv === 'production';
+
+const { CLIENT_ENTRY, CLIENT_OUTPUT, PUBLIC_PATH } = CONFIG;
 
 module.exports = {
-  devtool: isProd ? 'hidden-source-map' : 'cheap-eval-source-map',
+  devtool: 'eval',
   entry: {
-    js: [
-      // 'webpack-dev-server/client?http://localhost:3000',
+    main: [
+      // 'webpack-dev-server/client?http://localhost:5000',
       'webpack/hot/only-dev-server',
-      'react-hot-loader/patch',
-      path.join(__dirname, 'src', 'index.js')
+      'webpack-hot-middleware/client',
+      CLIENT_ENTRY
     ],
-    vendor: [ 'react', 'react-dom', 'react-redux', 'react-router', 'react-router-redux', 'redux' ]
+    vendor: [
+      'react',
+      'react-dom',
+      'react-router',
+      'redux',
+      'react-redux',
+      'aphrodite'
+    ]
   },
   output: {
-    path: path.join(__dirname, 'dist'),
-    publicPath: '/static/',
-    filename: 'bundle.js'
+    filename: '[name].js',
+    chunkFilename: '[name].chunk.js',
+    publicPath: '/',
+    path: CLIENT_OUTPUT
   },
   module: {
     preLoaders: [
@@ -31,10 +39,12 @@ module.exports = {
     ],
     loaders: [
       {
-        test: /\.html$/,
-        loader: 'file',
+        test: /\.js$/,
+        loader: 'babel',
+        exclude: /(node_modules|server)/,
         query: {
-          name: '[name].[ext]'
+          cacheDirectory: true,
+          presets: ["es2015", "react", "stage-0"]
         }
       },
       {
@@ -47,14 +57,13 @@ module.exports = {
       { test: /\.scss$/,
         loaders: ['style', 'css', 'autoprefixer', 'sass']
       },
-      {
-        test: /\.(js|jsx)$/,
-        exclude: /(node_modules|server)/,
-        loader: 'babel'
-      },
       { test: /\.woff(2)?(\?v=[0-9]\.[0-9]\.[0-9])?$/, loader: 'url-loader?limit=10000&mimetype=application/font-woff' },
-      { test: /\.(ttf|eot|svg)(\?v=[0-9]\.[0-9]\.[0-9])?$/, loader: 'file-loader' },
-    ],
+      { test: /\.(ttf|eot|svg)(\?v=[0-9]\.[0-9]\.[0-9])?$/, loader: 'file-loader' }
+    ]
+  },
+  standard: {
+    // config options to be passed through to standard e.g.
+    parser: 'babel-eslint'
   },
   resolve: {
     extensions: ['', '.js', '.jsx'],
@@ -74,29 +83,16 @@ module.exports = {
   },
   plugins: [
     new webpack.HotModuleReplacementPlugin(),
-
+    new webpack.DefinePlugin({
+      'process.env.NODE_ENV': JSON.stringify('development'),
+      '__DEV__': true
+    }),
     new webpack.optimize.CommonsChunkPlugin({
       name: 'vendor',
       minChunks: Infinity,
-      filename: 'vendor.bundle.js'
-    }),/*
-    new webpack.LoaderOptionsPlugin({
-      minimize: true,
-      debug: false
+      filename: 'vendor.js'
     }),
-    new webpack.optimize.UglifyJsPlugin({
-      compress: {
-        warnings: false
-      },
-      output: {
-        comments: false
-      },
-      sourceMap: false
-    }),*/
-    new webpack.DefinePlugin({
-      __DEV__: true,
-      'process.env': { NODE_ENV: JSON.stringify(nodeEnv) },
-      'process.env.BROWSER': true
-    })
-  ]
+    // new webpack.optimize.CommonsChunkPlugin('vendor', 'vendor.js', 2),
+    new webpack.NoErrorsPlugin()
+  ],
 };

@@ -5,34 +5,47 @@
 'use strict';
 
 import React from 'react';
-import { Link } from 'react-router';
+import Helmet from 'react-helmet';
+import Nav from '../../components/Nav';
+import { StyleSheet, css } from 'aphrodite';
 
-export default class Layout extends React.Component {
-  render() {
-    return (
-      <div className="app-container">
-        <header>
-          <Link to="/">
-            <img className="logo" src="/img/logo-judo-heroes.png"/>
-          </Link>
-        </header>
-        <div className="app-content">{this.props.children}</div>
-        <footer>
-          <p>
-            This is a demo app to showcase universal rendering and routing with <strong>React</strong> and <strong>Express</strong>.
-          </p>
+const Layout = ({ children }) => (
+  <div className={css(styles.root)}>
+    <Helmet title='React Production Starter' titleTemplate='%s - React Production Starter' />
+    <h1 className={css(styles.title)}>React Production Starter</h1>
+    <Nav />
+    {children}
+    <footer className={css(styles.footer)}>
+      Copyright © 2016 <a className={css(styles.footerLink)} href='http://twitter.com/jaredpalmer' target='_blank'>Jared Palmer</a>
+    </footer>
+  </div>
+);
 
-          <p>
-            Do you want to know more about Node.js and Universal JavaScript? <strong>Checkout <a href="https://nodejsdesignpatterns.com">Node.js Design Patterns</a></strong>.
-          </p>
-
-          <p>
-            Built with <strong>❤</strong>︎ and <strong>code</strong> by <a href="http://loige.co" target="_blank">loige</a>.
-            Contribute on <a href="https://github.com/lmammino/judo-heroes">GitHub</a> or
-            read the tutorial on <a href="https://scotch.io/tutorials/react-on-the-server-for-beginners-build-a-universal-react-and-node-app">Scotch.io</a>
-          </p>
-        </footer>
-      </div>
-    );
+const styles = StyleSheet.create({
+  root: {
+    maxWidth: 700,
+    color: '#000',
+    margin: '2rem auto',
+    padding: '0 1rem'
+  },
+  title: {
+    color: '#000',
+    maxWidth: 300,
+    fontWeight: 'bold',
+    fontSize: 56
+  },
+  footer: {
+    margin: '4rem auto',
+    textAlign: 'center',
+    color: '#b7b7b7'
+  },
+  footerLink: {
+    display: 'inline-block',
+    color: '#000',
+    textDecoration: 'none'
   }
-}
+});
+
+Layout.defaultProps = {};
+export default Layout;
+

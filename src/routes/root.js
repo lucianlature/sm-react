@@ -1,0 +1,31 @@
+/**
+ * Created by Lucian on 16/09/2016.
+ */
+
+// polyfill webpack require.ensure
+if (typeof require.ensure !== 'function') require.ensure = (d, c) => c(require);
+
+import Layout from '../containers/Layout';
+import Home from './Home';
+
+export default function createRoutes (store) {
+  const root = {
+    path: '/',
+    component: Layout,
+    getChildRoutes (location, cb) {
+      require.ensure([], (require) => {
+        cb(null, [
+          // require('./PostList').default(store), // no need to modify store, no reducer
+          // require('./Post').default(store), // add async reducer
+          require('../components/NotFoundPage').default
+        ])
+      })
+    },
+
+    indexRoute: {
+      component: Home
+    }
+  };
+
+  return root;
+}
