@@ -23,8 +23,6 @@ import webpackConfig from '../tools/webpack.client.dev';
 import DefaultServerConfig from './config';
 import { compileDev, startDev } from '../tools/dx';
 import { configureStore } from '../src/store';
-import DevTools from '../src/containers/DevTools';
-import reducer from '../src/createReducer';
 import createRoutes from '../src/routes/root';
 
 export const createServer = (config) => {
@@ -47,7 +45,15 @@ export const createServer = (config) => {
     const compiler = compileDev((webpack(webpackConfig)), config.port);
     app.use(webpackDevMiddleware(compiler, {
       publicPath: '/',
-      quiet: true,
+      profile: true,
+      stats: {
+        colors: true,
+        hash: true,
+        version: true,
+        timings: true,
+        assets: true,
+        chunks: true
+      },
       watchOptions: {
         ignored: /node_modules/
       }
@@ -95,10 +101,7 @@ export const createServer = (config) => {
           const initialState = store.getState();
           const InitialView = (
             <Provider store={store}>
-              <div>
-                <RouterContext {...renderProps} />
-                <DevTools />
-              </div>
+              <RouterContext {...renderProps} />
             </Provider>
           );
 

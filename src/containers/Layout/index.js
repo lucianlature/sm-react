@@ -6,18 +6,20 @@
 
 import React from 'react';
 import Helmet from 'react-helmet';
-import Nav from '../../components/Nav';
+import Header from '../../components/Header';
+import Footer from '../../components/Footer';
+import DevTools from '../../containers/DevTools';
+import SidebarLeft from '../../components/SidebarLeft';
 import { StyleSheet, css } from 'aphrodite';
 
 const Layout = ({ children }) => (
-  <div className={css(styles.root)}>
-    <Helmet title='React Production Starter' titleTemplate='%s - React Production Starter' />
-    <h1 className={css(styles.title)}>React Production Starter</h1>
-    <Nav />
+  <div className="wrapper">
+    <Helmet title='SiteManager &ndash; ReactJS' titleTemplate='%s - Site manager v2' />
+    <Header />
+    <SidebarLeft />
     {children}
-    <footer className={css(styles.footer)}>
-      Copyright © 2016 <a className={css(styles.footerLink)} href='http://twitter.com/jaredpalmer' target='_blank'>Jared Palmer</a>
-    </footer>
+    <Footer />
+    <DevTools />
   </div>
 );
 

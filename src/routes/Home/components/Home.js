@@ -6,7 +6,7 @@ import data from '../data'
 // This is a static page. It uses an array to hold data about the resources
 // and maintain DRY
 const Home = (props) => (
-  <div>
+  <div className="content-wrapper">
 
     <h2 className={css(styles.header)}>About</h2>
     <p className={css(styles.lead)}>

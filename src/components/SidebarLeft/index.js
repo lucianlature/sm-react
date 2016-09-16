@@ -4,7 +4,7 @@
 
 'use strict';
 
-// import $ from 'jquery';
+import $ from 'jquery';
 import React from 'react';
 import I from 'react-fontawesome';
 import NavLink from '../NavLink';
@@ -12,7 +12,7 @@ import NavLink from '../NavLink';
 class SidebarLeft extends React.Component {
   componentDidMount () {
     function _fix () {
-      //Get window height and the wrapper height
+      // Get window height and the wrapper height
       const neg = $('.main-header').outerHeight() + $('.main-footer').outerHeight();
       const window_height = $(window).height();
       const sidebar_height = $('.sidebar').height();

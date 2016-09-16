@@ -8,7 +8,6 @@ module.exports = {
   devtool: 'eval',
   entry: {
     main: [
-      // 'webpack-dev-server/client?http://localhost:5000',
       'webpack/hot/only-dev-server',
       'webpack-hot-middleware/client',
       CLIENT_ENTRY
@@ -74,7 +73,7 @@ module.exports = {
       // stores: `${defaultSettings.srcPath}/stores/`,
       // styles: `${defaultSettings.srcPath}/styles/`,
       // config: `${defaultSettings.srcPath}/config/` + process.env.REACT_WEBPACK_ENV,
-      jquery: path.join(__dirname, 'node_modules', 'jquery', 'dist', 'jquery.js')
+      '$': 'jquery'
     },
     modules: [
       path.resolve('./src'),

@@ -6,7 +6,6 @@ import ReactDOM from 'react-dom';
 import Router from 'react-router/lib/Router';
 import match from 'react-router/lib/match';
 import browserHistory from 'react-router/lib/browserHistory';
-import DevTools from './containers/DevTools';
 import { Provider } from 'react-redux';
 import { StyleSheet } from 'aphrodite';
 
@@ -19,6 +18,10 @@ const { dispatch } = store;
 const container = document.getElementById('root');
 
 StyleSheet.rehydrate(window.renderedClassNames);
+
+require('bootstrap/dist/css/bootstrap.css');
+require('font-awesome/css/font-awesome.css');
+require('./styles/Reactive-Admin.scss');
 
 const render = () => {
   const { pathname, search, hash } = window.location;
@@ -36,10 +39,7 @@ const render = () => {
     // `routes.` Normally, we would want just one file from which we require `routes` from.
     ReactDOM.render(
       <Provider store={store}>
-        <div>
-          <Router routes={routes} history={browserHistory} key={Math.random()} />
-          <DevTools />
-        </div>
+        <Router routes={routes} history={browserHistory} key={Math.random()} />
       </Provider>,
       container
     )
