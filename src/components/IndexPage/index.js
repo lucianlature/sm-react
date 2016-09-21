@@ -5,11 +5,12 @@
 'use strict';
 
 import React from 'react';
+import { Link } from 'react-router';
 import { Row, Col, Panel } from 'react-bootstrap';
 import { Table, Column, Cell } from 'fixed-data-table';
 import FakeStore from '../../data/fakeStore';
 
-// require('fixed-data-table/dist/fixed-data-table.min.css');
+// require('fixed-data-table/dist/fixed-data-table.css');
 
 const DateCell = ({rowIndex, data, col, ...props}) => (
   <Cell {...props}>
@@ -19,7 +20,7 @@ const DateCell = ({rowIndex, data, col, ...props}) => (
 
 const LinkCell = ({rowIndex, data, col, ...props}) => (
   <Cell {...props}>
-    <a href="#">{data.getObjectAt(rowIndex)[col]}</a>
+    <Link to={`/collection/${data.getObjectAt(0)[col]}`}> {data.getObjectAt(rowIndex)[col]} </Link>
   </Cell>
 );
 

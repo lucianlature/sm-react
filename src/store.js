@@ -6,10 +6,11 @@ import DevTools from './containers/DevTools';
 
 export function configureStore (initialState) {
   let store = createStore(createReducer(), initialState, compose(
-    DevTools.instrument(),
     applyMiddleware(
       thunk.withExtraArgument({ axios })
     ),
+
+    DevTools.instrument(),
 
     process.env.NODE_ENV === 'development' &&
     typeof window === 'object' &&

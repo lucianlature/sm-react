@@ -62,7 +62,8 @@ export const createServer = (config) => {
   }
 
   app.use(Express.static(path.join(__dirname, '..', 'src', 'static')));
-  // app.use('/api/v0/posts', require('./api/posts'));
+  app.use('/api/v0/collections', require('./api/collections'));
+
   app.get('*', (req, res) => {
     const store = configureStore({
       sourceRequest: {

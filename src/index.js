@@ -21,6 +21,7 @@ StyleSheet.rehydrate(window.renderedClassNames);
 
 require('bootstrap/dist/css/bootstrap.css');
 require('font-awesome/css/font-awesome.css');
+require('fixed-data-table/dist/fixed-data-table.css');
 require('./styles/Reactive-Admin.scss');
 
 const render = () => {

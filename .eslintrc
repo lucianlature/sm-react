@@ -11,7 +11,8 @@
     "react/require-render-return": 0,
     "comma-dangle": 0,
     "no-use-before-define": 0,
-    "new-cap": 0
+    "new-cap": 0,
+    "semi": "always"
   },
   "plugins": [
     "react"

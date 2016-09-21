@@ -160,158 +160,20 @@ class SidebarLeft extends React.Component {
           {/* SidebarLeft user panel */}
           <div className="user-panel">
             <div className="pull-left image">
-              <img src="img/user2-160x160.jpg" className="img-circle" alt="User Image" />
+              <img src="/img/user2-160x160.jpg" className="img-circle" alt="User Image" />
             </div>
             <div className="pull-left info">
-              <p>John Doe</p>
+              <p>Lucian Lature</p>
               <a href="#"><I name="circle text-success" /> Online</a>
             </div>
           </div>
           {/* sidebar menu: : style can be found in sidebar.less */}
           <ul className="sidebar-menu">
             <li>
-              <NavLink to="/dashboard">
-                <I name="dashboard" /> <span>Dashboard</span>
+              <NavLink to="/collections">
+                <I name="dashboard" /> <span>Collections</span>
               </NavLink>
             </li>
-            <li>
-              <NavLink to="/widgets">
-                <I name="th" /> <span>Widgets</span> <small className="label pull-right bg-green">new</small>
-              </NavLink>
-            </li>
-            <li className="treeview">
-              <NavLink to="/charts">
-                <I name="pie-chart" />
-                <span>Charts</span>
-                <I name="angle-left pull-right" />
-              </NavLink>
-              <ul className="treeview-menu">
-                <li>
-                  <NavLink to="/charts/chartjs">
-                    <I name="circle-o" /> ChartJS
-                  </NavLink>
-                </li>
-                <li>
-                  <NavLink to="/charts/flot">
-                    <I name="circle-o" /> Flot
-                  </NavLink>
-                </li>
-              </ul>
-            </li>
-            <li className="treeview">
-              <NavLink to="/uis">
-                <I name="laptop" />
-                <span>UI Elements</span>
-                <I name="angle-left pull-right" />
-              </NavLink>
-              <ul className="treeview-menu">
-                <li>
-                  <NavLink to="/ui/general">
-                    <I name="circle-o" /> General
-                  </NavLink>
-                </li>
-                <li>
-                  <NavLink to="/ui/paneltab">
-                    <I name="circle-o" /> Panel & Tab
-                  </NavLink>
-                </li>
-                <li>
-                  <NavLink to="/ui/icons">
-                    <I name="circle-o" /> Icons
-                  </NavLink>
-                </li>
-                <li>
-                  <NavLink to="/ui/buttons">
-                    <I name="circle-o" /> Buttons
-                  </NavLink>
-                </li>
-                {/* <li>
-                 <NavLink to="/ui/sliders">
-                 <I name="circle-o" /> Sliders
-                 </NavLink>
-                 </li>*/}
-              </ul>
-            </li>
-            <li className="treeview">
-              <NavLink to="/forms">
-                <I name="edit" /> <span>Forms</span>
-                <I name="angle-left pull-right" />
-              </NavLink>
-              <ul className="treeview-menu">
-                <li>
-                  <NavLink to="/forms/general">
-                    <I name="circle-o" /> General Elements
-                  </NavLink>
-                </li>
-                <li>
-                  <NavLink to="/forms/advanced">
-                    <I name="circle-o" /> Advanced Elements
-                  </NavLink>
-                </li>
-                <li>
-                  <NavLink to="/forms/editor">
-                    <I name="circle-o" /> Editors
-                  </NavLink>
-                </li>
-              </ul>
-            </li>
-            <li className="treeview">
-              <NavLink to="/tables">
-                <I name="table" /> <span>Tables</span>
-                <I name="angle-left pull-right" />
-              </NavLink>
-              <ul className="treeview-menu">
-                <li>
-                  <NavLink to="/tables/simple">
-                    <I name="circle-o" /> Simple tables
-                  </NavLink>
-                </li>
-                <li>
-                  <NavLink to="/tables/advanced">
-                    <I name="circle-o" /> Fixed data tables
-                  </NavLink>
-                </li>
-              </ul>
-            </li>
-            <li>
-              <NavLink to="/calendar">
-                <I name="calendar" /> <span>Calendar</span>
-                <small className="label pull-right bg-red">3</small>
-              </NavLink>
-            </li>
-            <li>
-              <NavLink to="/mailbox">
-                <I name="envelope" /> <span>Mailbox</span>
-                <small className="label pull-right bg-yellow">12</small>
-              </NavLink>
-            </li>
-            <li className="treeview">
-              <a href="#">
-                <I name="share" /> <span>Multilevel</span>
-                <I name="angle-left pull-right" />
-              </a>
-              <ul className="treeview-menu">
-                <li><a href="#"><I name="circle-o" /> Level One</a></li>
-                <li>
-                  <a href="#"><I name="circle-o" /> Level One <I name="angle-left pull-right" /></a>
-                  <ul className="treeview-menu">
-                    <li><a href="#"><I name="circle-o" /> Level Two</a></li>
-                    <li>
-                      <a href="#"><I name="circle-o" /> Level Two <I name="angle-left pull-right" /></a>
-                      <ul className="treeview-menu">
-                        <li><a href="#"><I name="circle-o" /> Level Three</a></li>
-                        <li><a href="#"><I name="circle-o" /> Level Three</a></li>
-                      </ul>
-                    </li>
-                  </ul>
-                </li>
-                <li><a href="#"><I name="circle-o" /> Level One</a></li>
-              </ul>
-            </li>
-            <li className="header">LABELS</li>
-            <li><a href="#"><I name="circle-o text-red" /> <span>Important</span></a></li>
-            <li><a href="#"><I name="circle-o text-yellow" /> <span>Warning</span></a></li>
-            <li><a href="#"><I name="circle-o text-aqua" /> <span>Information</span></a></li>
           </ul>
         </section>
         {/* /.sidebar */}

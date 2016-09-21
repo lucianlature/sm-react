@@ -1,12 +1,12 @@
-import React from 'react'
+import React from 'react';
 
-import { StyleSheet, css } from 'aphrodite'
-import data from '../data'
+import { StyleSheet, css } from 'aphrodite';
+import data from '../data';
 
 // This is a static page. It uses an array to hold data about the resources
 // and maintain DRY
 const Home = (props) => (
-  <div className="content-wrapper">
+  <div className='content-wrapper'>
 
     <h2 className={css(styles.header)}>About</h2>
     <p className={css(styles.lead)}>
@@ -27,7 +27,7 @@ const Home = (props) => (
        ))}
     </ul>
   </div>
-)
+);
 
 const styles = StyleSheet.create({
   header: {
@@ -67,6 +67,6 @@ const styles = StyleSheet.create({
       textDecoration: 'none'
     }
   }
-})
+});
 
-export default Home
+export default Home;
