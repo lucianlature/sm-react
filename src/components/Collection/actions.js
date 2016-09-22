@@ -17,11 +17,15 @@ const collectionRequest = () => ({
 
 // This is a curried function that takes page as argument,
 // and expects payload as argument to be passed upon API call success.
-const collectionSuccess = () =>
-  payload => ({
-      type: LOAD_COLLECTION_SUCCESS,
-      collection: payload.results
-    });
+const collectionSuccess = payload => {
+  return ({
+    type: LOAD_COLLECTION_SUCCESS,
+    collection: payload.data,
+    meta: Object.assign({}, payload.data.metadata, {
+      lastFetched: Date.now()
+    })
+  });
+}
 
 // This is a curried function that takes page as argument,
 // and expects error as argument to be passed upon API call failure.
@@ -32,7 +36,7 @@ const collectionFailure = () =>
   });
 
 function fetchTopUsers(id) {
-  const url = `${API_ROOT}/api/v1/scm/collections?page=${page}`;
+  const url = `${API_ROOT}/api/v0/collections?page=${page}`;
   return callApi(url, null, usersRequest(page), usersSuccess(page), usersFailure(page));
 }
 
@@ -40,23 +44,29 @@ export function loadCollection (id) {
   return (dispatch, getState, { axios }) => {
     const { protocol, host } = getState().sourceRequest;
     dispatch({ type: LOAD_COLLECTION_REQUEST });
-    return axios.get(`${protocol}://${host}/api/v1/scm//${id}`)
-      .then(res => {
-        dispatch({
-          type: LOAD_COLLECTION_SUCCESS,
-          payload: res.data,
-          meta: {
-            lastFetched: Date.now()
-          }
-        })
+
+    axios.get(`${protocol}://${host}/api/v0/collections/${id}`)
+      .then(payload => {
+        dispatch(collectionSuccess(payload))
       })
       .catch(error => {
         console.error(`Error in reducer that handles ${LOAD_COLLECTION_SUCCESS}: `, error);
-        dispatch({
-          type: LOAD_COLLECTION_FAILURE,
-          payload: error,
-          error: true
-        });
+        const response = error.response;
+        if (response === undefined) {
+          dispatch(collectionFailure(error));
+        } else {
+          error.status = response.status;
+          error.statusText = response.statusText;
+          response.text().then((text) => {
+            try {
+              const json = JSON.parse(text);
+              error.message = json.message;
+            } catch (ex) {
+              error.message = text;
+            }
+            dispatch(collectionFailure(error));
+          });
+        }
       })
   }
 }

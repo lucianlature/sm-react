@@ -23,15 +23,15 @@ export default function currentCollection (state = initialState, action) {
     case types.LOAD_COLLECTION_SUCCESS:
       return {
         ...state,
-        title: action.payload.title,
-        slug: action.payload.slug,
+        title: action.collection.title,
+        slug: action.collection.slug,
         lastFetched: action.meta.lastFetched,
         isLoading: false
       };
     case types.LOAD_COLLECTION_FAILURE:
       return {
         ...state,
-        error: action.payload
+        error: action.collection
       };
     default:
       return state;

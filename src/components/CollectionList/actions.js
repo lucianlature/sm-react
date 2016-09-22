@@ -41,8 +41,7 @@ export function loadCollections (page = 1) {
 
     dispatch(collectionsRequest(page));
 
-    return axios.get(`${protocol}://${host}/api/v0/collections?page=${page}`)
-      .then(checkStatus)
+    axios.get(`${protocol}://${host}/api/v0/collections?page=${page}`)
       .then(payload => {
         dispatch(collectionsSuccess(page)(payload))
       })

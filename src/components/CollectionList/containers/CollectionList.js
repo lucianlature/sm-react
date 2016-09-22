@@ -71,15 +71,35 @@ const CollectionListPage = ({ collections }) => (
                 width={100}
               />
               <Column
-                header={<Cell>Slug</Cell>}
-                cell={<TextCell data={collections.data} col="slug" />}
-                width={200}
-              />
-              <Column
                 header={<Cell>Title</Cell>}
                 cell={<TextCell data={collections.data} col="title" />}
                 fixed={false}
                 width={400}
+              />
+              <Column
+                header={<Cell>Recipes</Cell>}
+                cell={<TextCell data={collections.data} col="recipes" />}
+                width={200}
+              />
+              <Column
+                header={<Cell>Articles</Cell>}
+                cell={<TextCell data={collections.data} col="articles" />}
+                width={200}
+              />
+              <Column
+                header={<Cell>Status</Cell>}
+                cell={<TextCell data={collections.data} col="status" />}
+                width={200}
+              />
+              <Column
+                header={<Cell>Syndicated</Cell>}
+                cell={<TextCell data={collections.data} col="syndicated" />}
+                width={200}
+              />
+              <Column
+                header={<Cell>Last Edited</Cell>}
+                cell={<TextCell data={collections.data} col="last_edited" />}
+                width={200}
               />
             </Table>
           </Panel>
