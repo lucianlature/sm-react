@@ -20,13 +20,13 @@ if (__DEV__) {
     key: 'dev-server',
   });
 
+  /*
   createMonitor({
    script: paths.bin('graphql'),
    key: 'graphql',
    });
 
 
-  /*
   createMonitor({
     script: paths.bin('relay'),
     key: 'relay',

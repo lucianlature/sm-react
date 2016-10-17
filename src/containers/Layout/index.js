@@ -51,7 +51,7 @@ const styles = StyleSheet.create({
 
 Layout.defaultProps = {};
 
-export default Relay.createContainer(Layout, {
+const caca = Relay.createContainer(Layout, {
   fragments: {
     collections: () => Relay.QL`
       fragment on Collection @relay(plural: true) {
@@ -71,3 +71,4 @@ export default Relay.createContainer(Layout, {
   }
 });
 
+export default Layout;

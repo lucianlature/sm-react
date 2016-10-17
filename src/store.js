@@ -1,13 +1,11 @@
-/*
 import { createStore, applyMiddleware, compose } from 'redux';
 import thunk from 'redux-thunk';
 import axios from 'axios';
 import createReducer from './createReducer';
 import DevTools from './containers/DevTools';
-*/
+
 
 export function configureStore (initialState) {
-  /*
   let store = createStore(createReducer(), initialState, compose(
     applyMiddleware(
       thunk.withExtraArgument({ axios })
@@ -31,11 +29,9 @@ export function configureStore (initialState) {
   }
 
   return store;
-  */
 }
-/*
+
 export function injectAsyncReducer (store, name, asyncReducer) {
   store.asyncReducers[name] = asyncReducer;
   store.replaceReducer(createReducer(store.asyncReducers));
 }
-*/

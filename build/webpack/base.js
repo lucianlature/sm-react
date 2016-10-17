@@ -56,7 +56,7 @@ export default {
       }
     ],
     */
-    loaders: [/*
+    loaders: [
       {
         test: /\.html$/,
         loader: 'file',
@@ -73,7 +73,7 @@ export default {
       },
       { test: /\.scss$/,
         loaders: ['style', 'css', 'postcss', 'resolve-url', 'sass?sourceMap']
-      },*/
+      },
       {
         test: /\.(js|jsx)$/,
         include: paths.src,

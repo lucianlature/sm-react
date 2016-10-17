@@ -7,7 +7,5 @@ import rootRoute from '../../routes';
 
 export default {
   Container: Layout,
-  queryConfig: new rootRoute({
-    collections: []
-  })
+  queryConfig: new rootRoute()
 };
