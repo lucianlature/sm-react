@@ -1,0 +1,14 @@
+#!/bin/sh -e
+
+# Created by Lucian on 12/10/2016.
+#    "start": "cross-env NODE_ENV=development node -r 'babel-register' ./server",
+#    "start-dev": "npm run start-dev-hmr",
+#    "start-dev-single-page": "node_modules/.bin/http-server src/static",
+#    "start-dev-hmr": "node_modules/.bin/webpack-dev-server --progress --inline --hot --history-api-fallback --port 3000",
+#    "build": "cross-env NODE_ENV=production webpack --config webpack.config.js --progress --profile --colors"
+
+NODE_ENV=development \
+`npm bin`/cross-env node \
+-r "babel-register" \
+-r "babel-polyfill" \
+./index.js

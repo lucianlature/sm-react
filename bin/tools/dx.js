@@ -2,8 +2,12 @@
 
 import chalk from 'chalk';
 import opn from 'opn';
-import { execSync } from 'child_process';
 import path from 'path';
+import { execSync } from 'child_process';
+
+import config from '../../config';
+
+const { paths, globals: { __DEV__, __PROD__ } } = config;
 
 function clearConsole () {
   process.stdout.write('\x1B[2J\x1B[0f')
@@ -104,7 +108,7 @@ export const compileDev = (compiler, port) => {
 };
 
 
-function openBrowser (port) {
+function openBrowser (port, host) {
   if (process.platform === 'darwin') {
     try {
       // Try our best to reuse existing tab
@@ -113,7 +117,7 @@ function openBrowser (port) {
       execSync(
         'osascript ' +
         path.resolve(__dirname, 'chrome.applescript') +
-        ' http://localhost:' + port + '/'
+        ` http://${host}:${port}/`
       );
       return
     } catch (err) {
@@ -122,15 +126,17 @@ function openBrowser (port) {
   }
   // Fallback to opn
   // (It will always open new tab)
-  opn('http://localhost:' + port + '/');
+  opn(`http://${host}:${port}/`);
 }
 
-export const startDev = (port, err) => {
-  clearConsole();
+export const startDev = (port, host, err) => {
+  // clearConsole();
+
   if (err) {
     console.log(chalk.red(err))
   }
   console.log(chalk.cyan('Starting development server...'));
   console.log();
-  openBrowser(port);
+
+  openBrowser(port, host);
 };

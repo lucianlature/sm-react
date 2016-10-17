@@ -78,12 +78,12 @@ const CollectionListPage = ({ collections }) => (
               />
               <Column
                 header={<Cell>Recipes</Cell>}
-                cell={<TextCell data={collections.data} col="recipes" />}
+                cell={<TextCell data={collections.data} col="recipe_count" />}
                 width={200}
               />
               <Column
                 header={<Cell>Articles</Cell>}
-                cell={<TextCell data={collections.data} col="articles" />}
+                cell={<TextCell data={collections.data} col="article_count" />}
                 width={200}
               />
               <Column

@@ -3,8 +3,8 @@
  */
 
 
-import API_ROOT from '../../../server/config';
-import { checkStatus } from '../../utils/api';
+// import API_ROOT from '../../../server/config';
+// import { checkStatus } from '../../utils/api';
 import {
   LOAD_COLLECTIONS_REQUEST,
   LOAD_COLLECTIONS_SUCCESS,

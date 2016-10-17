@@ -2,7 +2,7 @@ import React, { Component, PropTypes } from 'react';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 
-import Preload from 'react-preload';
+// import Preload from 'react-preload';
 import Header from 'components/Header';
 import Grid from 'components/Grid';
 import TransactionForm from 'containers/TransactionForm';

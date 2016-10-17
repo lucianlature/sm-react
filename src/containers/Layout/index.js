@@ -5,6 +5,7 @@
 'use strict';
 
 import React from 'react';
+import Relay from 'react-relay';
 import Helmet from 'react-helmet';
 import Header from '../../components/Header';
 import Footer from '../../components/Footer';
@@ -49,5 +50,24 @@ const styles = StyleSheet.create({
 });
 
 Layout.defaultProps = {};
-export default Layout;
+
+export default Relay.createContainer(Layout, {
+  fragments: {
+    collections: () => Relay.QL`
+      fragment on Collection @relay(plural: true) {
+        slug
+        title
+        assets {
+          edges {
+            node {
+              asset {
+                asset_url
+              }
+            }
+          }
+        }
+      }
+    `,
+  }
+});
 

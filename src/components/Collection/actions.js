@@ -2,8 +2,8 @@
  * Created by Lucian on 18/09/2016.
  */
 
-import { API_ROOT } from '../../../server/config';
-import { callApi } from '../../utils/api';
+// import { API_ROOT } from '../../../server/config';
+// import { callApi } from '../../utils/api';
 import {
   LOAD_COLLECTION_REQUEST,
   LOAD_COLLECTION_SUCCESS,
