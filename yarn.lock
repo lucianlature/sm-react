@@ -3889,7 +3889,7 @@ koa-mount@next:
     debug "*"
     koa-compose "^3.0.0"
 
-koa-proxy@^0.6.0:
+koa-proxy:
   version "0.6.0"
   resolved "https://registry.yarnpkg.com/koa-proxy/-/koa-proxy-0.6.0.tgz#99f1860ff65fe167a865a5649d57a7dd3ad5cab0"
   dependencies:
@@ -3918,6 +3918,13 @@ koa-static@next:
   dependencies:
     debug "*"
     koa-send "^3.2.0"
+
+koa-webpack-middleware:
+  version "1.0.1"
+  resolved "https://registry.yarnpkg.com/koa-webpack-middleware/-/koa-webpack-middleware-1.0.1.tgz#fd59ea6ba78a8d346b3813faabd0fdf6b5630905"
+  dependencies:
+    webpack-dev-middleware "1.6.1"
+    webpack-hot-middleware "2.10.0"
 
 koa@^2.0.0:
   version "2.0.0"
@@ -7012,6 +7019,14 @@ webpack-dev-middleware@^1.4.0, webpack-dev-middleware@^1.7.0:
     path-is-absolute "^1.0.0"
     range-parser "^1.0.3"
 
+webpack-dev-middleware@1.6.1:
+  version "1.6.1"
+  resolved "https://registry.yarnpkg.com/webpack-dev-middleware/-/webpack-dev-middleware-1.6.1.tgz#c25ef832abc7d360c38bb40eb918692720ced611"
+  dependencies:
+    memory-fs "~0.3.0"
+    mime "^1.3.4"
+    range-parser "^1.0.3"
+
 webpack-dev-server@beta:
   version "2.1.0-beta.9"
   resolved "https://registry.yarnpkg.com/webpack-dev-server/-/webpack-dev-server-2.1.0-beta.9.tgz#45745a4a6b84849c63e3a21dfab3be7bdb897554"
@@ -7034,6 +7049,15 @@ webpack-dev-server@beta:
 webpack-hot-middleware@^2.12.2:
   version "2.13.0"
   resolved "https://registry.yarnpkg.com/webpack-hot-middleware/-/webpack-hot-middleware-2.13.0.tgz#aee39c058ff130a5916e2c5a762513241c87064f"
+  dependencies:
+    ansi-html "0.0.5"
+    html-entities "^1.2.0"
+    querystring "^0.2.0"
+    strip-ansi "^3.0.0"
+
+webpack-hot-middleware@2.10.0:
+  version "2.10.0"
+  resolved "https://registry.yarnpkg.com/webpack-hot-middleware/-/webpack-hot-middleware-2.10.0.tgz#aa4d6cedb9979d3f7b5e33999be380f12120fc74"
   dependencies:
     ansi-html "0.0.5"
     html-entities "^1.2.0"

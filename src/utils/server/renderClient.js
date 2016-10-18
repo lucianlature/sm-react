@@ -33,7 +33,7 @@ if (__PROD__) {
 }
 */
 export default function renderClient(): Function {
-  return async function renderClientMiddleware (ctx) {
+  return async function renderClientMiddleware (ctx, next) {
     /*
     const store = configureStore({
       sourceRequest: {
@@ -212,21 +212,22 @@ export default function renderClient(): Function {
                 <body>
                     <div id="root">${reactOutput}</div>
                     <script id="preloaded-data" type="application/json">${preloadedData}</script>
-                    <script src="/app.js"></script>
+                    <script src="/build/vendor.bundle.js"></script>
                 </body>
             </html>
         `;
     }
 
-    const { redirectLocation, renderProps } = await new Promise((resolve, reject) => {
+    const { err, redirectLocation, renderProps } = await new Promise((resolve, reject) => {
       match({
         routes,
         location: ctx.req.url
       }, (err, redirectLocation, renderProps) => {
         if (err) {
+          ctx.throw(`Error matching the route with current location: ${ctx.req.url}`);
           return reject(err);
         }
-        return resolve({ redirectLocation, renderProps });
+        return resolve({ err, redirectLocation, renderProps });
       });
     });
 
@@ -240,8 +241,8 @@ export default function renderClient(): Function {
 
       ctx.status = 200;
       ctx.body = await render(reactOutput, preloadedData, head);
-    } else {
-      ctx.throw(404, 'Not found');
     }
+
+    await next();
   }
 }

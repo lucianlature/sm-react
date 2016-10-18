@@ -10,7 +10,7 @@ export type WebStats = {
   js: Array<string>;
 };
 
-export default async function readJSON(path: string): Promise {
+export default async function readJSON(path: string) {
   try {
     const json: string = await readFileAsync(path);
     const data: WebStats = {

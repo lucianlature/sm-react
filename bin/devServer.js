@@ -4,7 +4,7 @@
  * Created by Lucian on 12/10/2016.
  */
 
-import { startDev } from './tools/dx';
+// import { startDev } from './tools/dx';
 import {
   client,
   server,
@@ -13,8 +13,7 @@ import config from '../config';
 
 const {
   host,
-  port,
-  webpackPort,
+  webpackPort: port,
   globals
 } = config;
 
@@ -23,7 +22,7 @@ const __DEV__ = globals.__DEV__;
 server.watch({
   noInfo: true,
   quiet: true,
-  stats: {colors: true},
+  stats: { colors: true },
 }, (err, stats) => {
   if (err) {
     console.error(err);
@@ -39,7 +38,7 @@ server.watch({
   }
 });
 
-client.listen(webpackPort, host, (err) => {
-  console.log(`Dev Server is running at http://${host}:${webpackPort}`);
-  startDev(port, host, err);
+client.listen(port, host, (err) => {
+  console.log(`Dev Server is running at http://${host}:${port}`);
+  // startDev(port, host, err);
 });

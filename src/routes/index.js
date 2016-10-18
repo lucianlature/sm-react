@@ -13,16 +13,16 @@ export default [
   {
     path: '/',
     component: Layout,
-    queries: collectionsQueries,
+    queries: collectionsQueries,/*
     getChildRoutes (location, cb) {
       require.ensure([], (require) => {
         cb(null, [
-          require('../components/CollectionList').default(store), // no need to modify store, no reducer
-          require('../components/Collection').default(store), // add async reducer
+          require('../components/CollectionList').default, // no need to modify store, no reducer
+          require('../components/Collection').default, // add async reducer
           require('../components/NotFoundPage').default
         ])
       })
-    },
+    },*/
 
     indexRoute: {
       component: Home
