@@ -17,6 +17,7 @@ export const BIN = 'bin';
 export const BUILD = 'build';
 export const DATA = 'data';
 export const DIST = 'dist';
+export const PUBLIC = 'public';
 
 /**********************************************************************
  * Environmental Variables
@@ -81,6 +82,7 @@ export const paths = (() => {
     build: base.bind(null, BUILD),
     data: base.bind(null, DATA),
     dist: base.bind(null, DIST),
+    public: base.bind(null, PUBLIC)
   };
 })();
 

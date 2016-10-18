@@ -198,7 +198,7 @@ export default function renderClient(): Function {
     });
     */
 
-    async function render(reactOutput, preloadedData, head) {
+    async function render(reactOutput, preloadedData, head, stats) {
       return `
             <!DOCTYPE>
             <html>
@@ -213,12 +213,13 @@ export default function renderClient(): Function {
                     <div id="root">${reactOutput}</div>
                     <script id="preloaded-data" type="application/json">${preloadedData}</script>
                     <script src="/build/vendor.bundle.js"></script>
+                    <script async src="/build/${stats.js[1]}"></script>
                 </body>
             </html>
         `;
     }
 
-    const { err, redirectLocation, renderProps } = await new Promise((resolve, reject) => {
+    const { redirectLocation, renderProps } = await new Promise((resolve, reject) => {
       match({
         routes,
         location: ctx.req.url
@@ -227,20 +228,21 @@ export default function renderClient(): Function {
           ctx.throw(`Error matching the route with current location: ${ctx.req.url}`);
           return reject(err);
         }
-        return resolve({ err, redirectLocation, renderProps });
+        return resolve({ redirectLocation, renderProps });
       });
     });
 
     if (redirectLocation) {
       ctx.redirect(redirectLocation.pathname + redirectLocation.search);
     } else if (renderProps) {
+      const stats = await readJSON(paths.dist('webpack-stats.json'));
       const { data, props } = await IsomorphicRouter.prepareData(renderProps, networkLayer);
       const preloadedData = JSON.stringify(data);
       const reactOutput = ReactDOM.renderToString(IsomorphicRouter.render(props));
       const head = Helm.rewind();
 
       ctx.status = 200;
-      ctx.body = await render(reactOutput, preloadedData, head);
+      ctx.body = await render(reactOutput, preloadedData, head, stats);
     }
 
     await next();

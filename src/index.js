@@ -31,6 +31,8 @@ if (__DEV__) {
   app.use(mount('/build', statics(paths.dist('client'))));
 }
 
+app.use(statics(paths.public()));
+
 app.use(renderClient());
 
 export default app;
