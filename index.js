@@ -12,26 +12,24 @@ if (__PROD__) {
 
 if (__DEV__) {
   createMonitor({
-    script: paths.bin('client'),
-    key: 'client',
+    script: paths.bin('relay'),
+    key: 'relay',
   });
+
+  createMonitor({
+    script: paths.bin('graphql'),
+    key: 'graphql',
+  });
+
   createMonitor({
     script: paths.bin('devServer'),
     key: 'dev-server',
   });
 
-  /*
   createMonitor({
-   script: paths.bin('graphql'),
-   key: 'graphql',
-   });
-
-
-  createMonitor({
-    script: paths.bin('relay'),
-    key: 'relay',
+    script: paths.bin('client'),
+    key: 'client',
   });
-  */
 }
 
 // createMonitor({

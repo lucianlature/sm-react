@@ -5,23 +5,15 @@
 // polyfill webpack require.ensure
 if (typeof require.ensure !== 'function') require.ensure = (d, c) => c(require);
 
-// import Relay from 'react-relay';
 import Layout from '../containers/Layout';
+import collectionsQueries from '../queries/collections';
 import Home from './Home';
 
-/*
-export default class extends Relay.Route {
-  static queries = {
-    collections: () => Relay.QL`query { collections(limit: 10) }`
-  };
-  static routeName = 'rootRoute';
-}
-*/
-
-export default function createRoutes (store) {
-  const root = {
+export default [
+  {
     path: '/',
     component: Layout,
+    queries: collectionsQueries,
     getChildRoutes (location, cb) {
       require.ensure([], (require) => {
         cb(null, [
@@ -35,7 +27,5 @@ export default function createRoutes (store) {
     indexRoute: {
       component: Home
     }
-  };
-
-  return root;
-}
+  }
+]

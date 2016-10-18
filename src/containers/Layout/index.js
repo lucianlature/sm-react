@@ -13,16 +13,24 @@ import DevTools from '../../containers/DevTools';
 import SidebarLeft from '../../components/SidebarLeft';
 import { StyleSheet, css } from 'aphrodite';
 
-const Layout = ({ children }) => (
-  <div className="wrapper">
-    <Helmet title='SiteManager &ndash; ReactJS' titleTemplate='%s - Site manager v2' />
-    <Header />
-    <SidebarLeft />
-    {children}
-    <Footer />
-    <DevTools />
-  </div>
-);
+class Layout extends React.Component {
+  static contextTypes = {
+    relay: Relay.PropTypes.Environment,
+  };
+
+  render(children) {
+    return (
+      <div className="wrapper">
+        <Helmet title='SiteManager &ndash; ReactJS' titleTemplate='%s - Site manager v2' />
+        <Header />
+        <SidebarLeft />
+        {children}
+        <Footer />
+        <DevTools />
+      </div>
+    );
+  }
+}
 
 const styles = StyleSheet.create({
   root: {
@@ -51,24 +59,13 @@ const styles = StyleSheet.create({
 
 Layout.defaultProps = {};
 
-const caca = Relay.createContainer(Layout, {
+export default Relay.createContainer(Layout, {
   fragments: {
     collections: () => Relay.QL`
-      fragment on Collection @relay(plural: true) {
+      fragment on Collection {
         slug
         title
-        assets {
-          edges {
-            node {
-              asset {
-                asset_url
-              }
-            }
-          }
-        }
       }
-    `,
+    `
   }
 });
-
-export default Layout;

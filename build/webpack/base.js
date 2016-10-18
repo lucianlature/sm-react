@@ -3,12 +3,11 @@ import precss from 'precss';
 // import HtmlWebpackPlugin from 'html-webpack-plugin';
 import config from '../../config';
 
-/*
 import {
   ReportStatsPlugin,
   WriteStatsPlugin,
 } from '../utils';
-*/
+
 const { paths, globals, aliases, env } = config;
 const { __PROD__ } = globals;
 
@@ -125,6 +124,8 @@ export default {
           path: paths.dist
         }
       }
-    })
+    }),
+    new ReportStatsPlugin(),
+    new WriteStatsPlugin()
   ]
 }

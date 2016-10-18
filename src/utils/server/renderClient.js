@@ -6,23 +6,24 @@ import { Provider } from 'react-redux';
 import Helm from 'react-helmet'; // because we are already using helmet
 import Relay from 'react-relay'
 // import IsomorphicRelay from 'isomorphic-relay';
+import IsomorphicRouter from 'isomorphic-relay-router';
 // import rootContainerProps from './rootContainerProps';
 import { createMemoryHistory, match, RouterContext } from 'react-router';
 import { StyleSheetServer } from 'aphrodite';
 import { trigger } from 'redial';
 // import { getRoutingContext, RouterResult } from './getRoutingContext';
-// import readJSON from './readJSON';
+import readJSON from './readJSON';
 
 
 import config from '../../../config';
-import { configureStore } from '../../store';
-import createRoutes from '../../routes';
+// import { configureStore } from '../../store';
+import routes from '../../routes';
 
 const { paths, globals: { __DEV__, __PROD__ }, host, graphQLPort } = config;
 
-/*
 const GRAPHQL_URL = `http://${host}:${graphQLPort}/graphql`;
 const networkLayer = new Relay.DefaultNetworkLayer(GRAPHQL_URL);
+/*
 let routes: ?{};
 let configureStore: ?Function;
 
@@ -32,9 +33,8 @@ if (__PROD__) {
 }
 */
 export default function renderClient(): Function {
-  return async function renderClientMiddleware(ctx, next) {
-    let { request, response, status, req, res } = ctx;
-
+  return async function renderClientMiddleware (ctx) {
+    /*
     const store = configureStore({
       sourceRequest: {
         protocol: req.headers['x-forwarded-proto'] || req.protocol,
@@ -46,8 +46,7 @@ export default function renderClient(): Function {
     const { dispatch } = store;
 
 
-    match({ routes, history}, (err, redirectLocation, renderProps) => {
-      /*
+    match({ routes, history}, async (err, redirectLocation, renderProps) => {
       if (err) {
         console.error(err);
         return response.status(500).send('Internal server error');
@@ -56,7 +55,6 @@ export default function renderClient(): Function {
       if (!renderProps) {
         return res.status(404).send('Not found');
       }
-      */
       const { components } = renderProps;
 
       // Define locals to be provided to all lifecycle hooks:
@@ -69,22 +67,25 @@ export default function renderClient(): Function {
         dispatch
       };
 
-      trigger('fetch', components, locals)
-        .then(() => {
-          const initialState = store.getState();
-          const InitialView = (
-            <Provider store={store}>
-              <RouterContext {...renderProps} />
-            </Provider>
-          );
+      await trigger('fetch', components, locals);
 
-          // just call html = ReactDOM.renderToString(InitialView)
-          // to if you don't want Aphrodite. Also change renderFullPage
-          // accordingly
-          const data = StyleSheetServer.renderStatic(
-            () => ReactDOM.renderToString(InitialView)
-          );
-          const head = Helm.rewind();
+      const initialState = store.getState();
+      const InitialView = (
+        <Provider store={store}>
+          <RouterContext {...renderProps} />
+        </Provider>
+      );
+
+      // just call html = ReactDOM.renderToString(InitialView)
+      // to if you don't want Aphrodite. Also change renderFullPage
+      // accordingly
+      const data = StyleSheetServer.renderStatic(
+        () => ReactDOM.renderToString(InitialView)
+      );
+      const head = Helm.rewind();
+
+      const stats = await readJSON(paths.dist('webpack-stats.json'));
+      ctx.body = 'Cocushele mele!';
 
           ctx.body = `
             <!DOCTYPE html>
@@ -189,15 +190,58 @@ export default function renderClient(): Function {
                 <script>window.renderedClassNames = ${JSON.stringify(data.css.renderedClassNames)};</script>
                 <script>window.INITIAL_STATE = ${JSON.stringify(initialState)};</script>
                 <script>__REACT_DEVTOOLS_GLOBAL_HOOK__ = parent.__REACT_DEVTOOLS_GLOBAL_HOOK__</script>
-                <script src="${ __PROD__ ? assets.vendor.js : '/vendor.js' }"></script>
-                <script async src="${ __PROD__ ? assets.main.js : '/main.js' }"></script>
+                <script src="/build/vendor.bundle.js"></script>
+                <script async src="/build/${stats.js[1]}"></script>
               </body>
             </html>
           `;
-        });
+    });
+    */
 
+    async function render(reactOutput, preloadedData, head) {
+      return `
+            <!DOCTYPE>
+            <html>
+                <head>
+                    <meta charset="utf-8">
+                    <meta name="viewport" content="width=device-width, initial-scale=1">
+                    ${head.title.toString()}
+                    ${head.meta.toString()}
+                    ${head.link.toString()}
+                </head>
+                <body>
+                    <div id="root">${reactOutput}</div>
+                    <script id="preloaded-data" type="application/json">${preloadedData}</script>
+                    <script src="/app.js"></script>
+                </body>
+            </html>
+        `;
+    }
+
+    const { redirectLocation, renderProps } = await new Promise((resolve, reject) => {
+      match({
+        routes,
+        location: ctx.req.url
+      }, (err, redirectLocation, renderProps) => {
+        if (err) {
+          return reject(err);
+        }
+        return resolve({ redirectLocation, renderProps });
+      });
     });
 
-    await next();
+    if (redirectLocation) {
+      ctx.redirect(redirectLocation.pathname + redirectLocation.search);
+    } else if (renderProps) {
+      const { data, props } = await IsomorphicRouter.prepareData(renderProps, networkLayer);
+      const preloadedData = JSON.stringify(data);
+      const reactOutput = ReactDOM.renderToString(IsomorphicRouter.render(props));
+      const head = Helm.rewind();
+
+      ctx.status = 200;
+      ctx.body = await render(reactOutput, preloadedData, head);
+    } else {
+      ctx.throw(404, 'Not found');
+    }
   }
 }
