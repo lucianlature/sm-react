@@ -13,5 +13,5 @@ const {
 } = config;
 
 app.listen(port, host, () => {
-  console.log(`===> 🚀 Client running at http://${host}:${port}`);
+  console.log(`🚀 Client running at http://${host}:${port}`);
 });

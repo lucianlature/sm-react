@@ -6,6 +6,9 @@ import config from '../config';
 const { webpackPublicPath } = config;
 
 const app = express();
+// make sure the first configuration defined
+// in `webpack.config.js` is for the client
+// TODO: find a better way to identify the client configuration
 const compiler = webpack(webpackConfig[0]);
 
 app.use(require('webpack-dev-middleware')(compiler, {

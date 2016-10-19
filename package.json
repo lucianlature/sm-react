@@ -4,8 +4,8 @@
   "description": "SiteManager built in ReactJS",
   "main": "index.js",
   "scripts": {
-    "prebuild": "npm run relay -s && npm run build:dlls",
-    "build:dlls": "node -r babel-register `npm bin`/webpack --colors --display-error-details --config ./build/webpack/dll.config.js",
+    "prebuild": "npm run relay -s",
+    "build": "NODE_ENV=production node -r babel-register `npm bin`/webpack",
     "relay": "./scripts/relaySchema.js",
     "prestart": "npm run build -s",
     "start": "./scripts/start",

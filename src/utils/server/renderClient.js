@@ -292,9 +292,8 @@ export default function renderClient(): Function {
                 <body class="hold-transition skin-blue sidebar-mini">
                     <div id="root">${reactOutput}</div>
                     <script id="preloaded-data" type="application/json">${preloadedData}</script>
-                    <!--<script src="/build/${stats.js[0]}"></script>-->
                     <script src="/dll/dll.vendor.js"></script>
-                    <script async src="/build/${stats.js[1]}"></script>
+                    <script async src="/build/${stats.js[0]}"></script>
                 </body>
             </html>
         `;

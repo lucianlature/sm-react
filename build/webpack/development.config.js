@@ -25,7 +25,8 @@ export default {
     // Swap out code without *always* needing a full page reload.
     new webpack.HotModuleReplacementPlugin(),
     new webpack.NoErrorsPlugin(),
-    /*
+
+    /*,
     new webpack.DllReferencePlugin({
       context: paths.src(),
       manifest: require( paths.build('webpack/dlls/vendor-manifest.json') )

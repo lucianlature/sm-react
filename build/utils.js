@@ -47,9 +47,8 @@ export function WriteStatsPlugin(): Function {
     this.plugin('done', stats => {
       const json = stats.toJson();
       const app = json.assetsByChunkName.app;
-      const vendor = json.assetsByChunkName.vendor;
 
-      const chunks = [].concat(vendor, app);
+      const chunks = [].concat(app);
 
       const assets = chunks.filter(chunk => {
         return ['.js', '.css'].indexOf(path.extname(chunk)) > -1;

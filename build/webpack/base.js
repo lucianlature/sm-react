@@ -34,8 +34,7 @@ export default {
       'react-hot-loader/patch',
       'webpack/hot/only-dev-server',
       paths.src('entryPoints/client')
-    ],
-    vendor: [ 'babel-polyfill', 'whatwg-fetch', 'react', 'react-dom', 'react-redux', 'react-router', 'react-router-redux', 'redux' ]
+    ]
   },
   output: {
     path: paths.dist('client'),
@@ -101,7 +100,7 @@ export default {
   plugins: [
     new webpack.DefinePlugin({
       __DEV__: true,
-      // 'process.env': { NODE_ENV: JSON.stringify(env) },
+      'process.env': { NODE_ENV: JSON.stringify(env) },
       'process.env.BROWSER': true
     }),
 
@@ -111,9 +110,10 @@ export default {
       minChunks: Infinity,
       filename: 'vendor.bundle.js'
     }),
+    */
+
     new webpack.optimize.OccurrenceOrderPlugin(),
     new webpack.optimize.UglifyJsPlugin(),
-    */
 
     new webpack.LoaderOptionsPlugin({
       test: /\.scss$/,
