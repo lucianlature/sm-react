@@ -190,7 +190,7 @@ export default function renderClient(): Function {
                 <script>window.renderedClassNames = ${JSON.stringify(data.css.renderedClassNames)};</script>
                 <script>window.INITIAL_STATE = ${JSON.stringify(initialState)};</script>
                 <script>__REACT_DEVTOOLS_GLOBAL_HOOK__ = parent.__REACT_DEVTOOLS_GLOBAL_HOOK__</script>
-                <script src="/build/vendor.bundle.js"></script>
+                <script src="/build/dll.vendor.js"></script>
                 <script async src="/build/${stats.js[1]}"></script>
               </body>
             </html>
@@ -292,7 +292,8 @@ export default function renderClient(): Function {
                 <body class="hold-transition skin-blue sidebar-mini">
                     <div id="root">${reactOutput}</div>
                     <script id="preloaded-data" type="application/json">${preloadedData}</script>
-                    <script src="/build/vendor.bundle.js"></script>
+                    <!--<script src="/build/${stats.js[0]}"></script>-->
+                    <script src="/dll/dll.vendor.js"></script>
                     <script async src="/build/${stats.js[1]}"></script>
                 </body>
             </html>

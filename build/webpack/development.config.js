@@ -20,13 +20,17 @@ export default {
     ],
   },
   plugins: [
+    // Development plugins
+    // * ------------------------------------- *
+    // Swap out code without *always* needing a full page reload.
     new webpack.HotModuleReplacementPlugin(),
     new webpack.NoErrorsPlugin(),
+    /*
+    new webpack.DllReferencePlugin({
+      context: paths.src(),
+      manifest: require( paths.build('webpack/dlls/vendor-manifest.json') )
+    }),
+    */
     ...base.plugins
-  ]/*,
-  eslint: {
-    configFile: paths.base('.eslintrc'),
-    failOnError: false,
-    emitWarning: true,
-  },*/
+  ]
 }

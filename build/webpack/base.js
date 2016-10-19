@@ -32,17 +32,16 @@ export default {
   entry: {
     app: [
       'react-hot-loader/patch',
-      'babel-polyfill',
-      'whatwg-fetch',
       'webpack/hot/only-dev-server',
-      paths.src('entryPoints/client'),
+      paths.src('entryPoints/client')
     ],
-    vendor: [ 'react', 'react-dom', 'react-redux', 'react-router', 'react-router-redux', 'redux' ]
+    vendor: [ 'babel-polyfill', 'whatwg-fetch', 'react', 'react-dom', 'react-redux', 'react-router', 'react-router-redux', 'redux' ]
   },
   output: {
     path: paths.dist('client'),
     publicPath: '/build/',
-    filename: '[name].[hash].js'
+    filename: '[name].[hash].js',
+    library: '[name]_lib'
   },
   module: {
     /*
@@ -75,10 +74,11 @@ export default {
       },
       {
         test: /\.(js|jsx)$/,
-        include: paths.src,
+        include: paths.src(), // important for performance!
         exclude: /(node_modules|server)/,
         loader: 'babel-loader',
         query: {
+          cacheDirectory: true, // important for performance!
           presets: ['es2015', 'stage-0', 'react'],
           plugins: ["react-hot-loader/babel", 'transform-async-to-generator', 'transform-decorators-legacy', 'transform-class-properties', 'transform-object-rest-spread']
         }
@@ -99,18 +99,22 @@ export default {
     ]
   },
   plugins: [
-    // new webpack.NamedModulesPlugin(),
-    // new webpack.HotModuleReplacementPlugin(),
     new webpack.DefinePlugin({
       __DEV__: true,
-      'process.env': { NODE_ENV: JSON.stringify(env) },
+      // 'process.env': { NODE_ENV: JSON.stringify(env) },
       'process.env.BROWSER': true
     }),
+
+    /*
     new webpack.optimize.CommonsChunkPlugin({
       name: 'vendor',
       minChunks: Infinity,
       filename: 'vendor.bundle.js'
     }),
+    new webpack.optimize.OccurrenceOrderPlugin(),
+    new webpack.optimize.UglifyJsPlugin(),
+    */
+
     new webpack.LoaderOptionsPlugin({
       test: /\.scss$/,
       debug: true,
@@ -118,7 +122,7 @@ export default {
         postcss: function() {
           return [ precss ];
         },
-        context: paths.src,
+        context: paths.src(),
         output: {
           path: paths.dist
         }
