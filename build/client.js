@@ -14,7 +14,7 @@ app.use(require('webpack-dev-middleware')(compiler, {
   stats: {
     colors: true
   },
-  overlay: true,
+  compress: true,
   hot: true,
   quiet: true,
   noInfo: true,

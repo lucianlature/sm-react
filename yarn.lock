@@ -5618,7 +5618,7 @@ react-helmet@^3.1.0:
     shallowequal "0.2.2"
     warning "2.1.0"
 
-react-hot-loader@^3.0.0-beta.2:
+react-hot-loader@^3.0.0-beta:
   version "3.0.0-beta.6"
   resolved "https://registry.yarnpkg.com/react-hot-loader/-/react-hot-loader-3.0.0-beta.6.tgz#463fac0bfc8b63a8385258af20c91636abce75f4"
   dependencies:

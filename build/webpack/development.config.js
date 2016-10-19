@@ -15,14 +15,14 @@ export default {
   entry: {
     ...base.entry,
     app: [
-      `webpack-dev-server/client?path=${webpackHmrPath}`,
+      `webpack-hot-middleware/client?reload=true&path=${webpackHmrPath}`,
       ...base.entry.app,
     ],
   },
   plugins: [
-    ...base.plugins,
     new webpack.HotModuleReplacementPlugin(),
     new webpack.NoErrorsPlugin(),
+    ...base.plugins
   ]/*,
   eslint: {
     configFile: paths.base('.eslintrc'),

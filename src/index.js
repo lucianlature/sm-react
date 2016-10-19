@@ -22,8 +22,6 @@ const __DEV__ = globals.__DEV__;
 const app = new Koa();
 
 app.use(compress());
-app.use(favicon(path.join(__dirname, '..', 'public', 'favicon.ico')));
-
 
 if (__DEV__) {
   app.use(mount('/build', convert(proxy({ host: webpackPublicPath }))));
@@ -31,6 +29,7 @@ if (__DEV__) {
   app.use(mount('/build', statics(paths.dist('client'))));
 }
 
+app.use(favicon(path.join(__dirname, '..', 'public', 'favicon.ico')));
 app.use(statics(paths.public()));
 
 app.use(renderClient());

@@ -56,7 +56,7 @@
     "postcss-loader": "^1.0.0",
     "precss": "^1.4.0",
     "pty.js": "^0.3.1",
-    "react-hot-loader": "^3.0.0-beta.2",
+    "react-hot-loader": "^3.0.0-beta",
     "redux-devtools": "^3.3.1",
     "sass-loader": "^4.0.2",
     "sequelize": "^3.24.3",

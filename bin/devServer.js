@@ -39,6 +39,6 @@ server.watch({
 });
 
 client.listen(port, host, (err) => {
-  console.log(`Dev Server is running at http://${host}:${port}`);
+  console.log(`===> 🚧  Dev Server is running at http://${host}:${port}`);
   // startDev(port, host, err);
 });

@@ -208,8 +208,88 @@ export default function renderClient(): Function {
                     ${head.title.toString()}
                     ${head.meta.toString()}
                     ${head.link.toString()}
+                    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+                    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+                    <!--[if lt IE 9]>
+                    <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
+                    <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+                    <![endif]-->
+                    <style>
+                      html {
+                        box-sizing: border-box
+                      }
+    
+                      *,
+                      *::before,
+                      *::after {
+                        box-sizing: border-box
+                      }
+    
+                      html {
+                        font-size: 100%;
+                        -ms-overflow-style: scrollbar;
+                        -webkit-tap-highlight-color: rgba(0,0,0,0);
+                        height: 100%;
+                      }
+    
+                      body {
+                        font-size: 1rem;
+                        background-color: #fff;
+                        color: #555;
+                        -webkit-font-smoothing: antialiased;
+                        -moz-osx-font-smoothing: grayscale;
+                        font-family: -apple-system,BlinkMacSystemFont,"Helvetica Neue",Helvetica,Arial,sans-serif;
+                      }
+    
+                      h1,h2,h3,h4,h5,h6 {
+                        margin: 0;
+                        padding: 0;
+                      }
+    
+                      .bs-glyphicons {
+                        padding-left: 0;
+                        padding-bottom: 1px;
+                        margin-bottom: 20px;
+                        list-style: none;
+                        overflow: hidden;
+                      }
+    
+                      .bs-glyphicons li {
+                        float: left;
+                        width: 25%;
+                        height: 115px;
+                        padding: 10px;
+                        margin: 0 -1px -1px 0;
+                        font-size: 12px;
+                        line-height: 1.4;
+                        text-align: center;
+                        border: 1px solid #ddd;
+                      }
+    
+                      .bs-glyphicons .glyphicon {
+                        margin-top: 5px;
+                        margin-bottom: 10px;
+                        font-size: 24px;
+                      }
+    
+                      .bs-glyphicons .glyphicon-class {
+                        display: block;
+                        text-align: center;
+                        word-wrap: break-word; /* Help out IE10+ with class names *
+                      }
+    
+                      .bs-glyphicons li:hover {
+                        background-color: rgba(86, 61, 124, .1);
+                      }
+    
+                      @media (min-width: 768px) {
+                        .bs-glyphicons li {
+                          width: 12.5%;
+                        }
+                      }
+                    </style>
                 </head>
-                <body>
+                <body class="hold-transition skin-blue sidebar-mini">
                     <div id="root">${reactOutput}</div>
                     <script id="preloaded-data" type="application/json">${preloadedData}</script>
                     <script src="/build/vendor.bundle.js"></script>

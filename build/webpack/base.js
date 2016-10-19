@@ -76,7 +76,7 @@ export default {
       {
         test: /\.(js|jsx)$/,
         include: paths.src,
-        // exclude: /(node_modules|server)/,
+        exclude: /(node_modules|server)/,
         loader: 'babel-loader',
         query: {
           presets: ['es2015', 'stage-0', 'react'],
@@ -99,18 +99,17 @@ export default {
     ]
   },
   plugins: [
-    new webpack.NamedModulesPlugin(),
-    new webpack.HotModuleReplacementPlugin(),
-
-    new webpack.optimize.CommonsChunkPlugin({
-      name: 'vendor',
-      minChunks: Infinity,
-      filename: 'vendor.bundle.js'
-    }),
+    // new webpack.NamedModulesPlugin(),
+    // new webpack.HotModuleReplacementPlugin(),
     new webpack.DefinePlugin({
       __DEV__: true,
       'process.env': { NODE_ENV: JSON.stringify(env) },
       'process.env.BROWSER': true
+    }),
+    new webpack.optimize.CommonsChunkPlugin({
+      name: 'vendor',
+      minChunks: Infinity,
+      filename: 'vendor.bundle.js'
     }),
     new webpack.LoaderOptionsPlugin({
       test: /\.scss$/,
