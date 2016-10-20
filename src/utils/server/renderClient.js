@@ -1,23 +1,34 @@
 // @flow
 
+import { StyleSheetServer } from 'aphrodite';
+
+// React deps
 import React from 'react';
 import ReactDOM from 'react-dom/server';
-import { Provider } from 'react-redux';
 import Helm from 'react-helmet'; // because we are already using helmet
-import Relay from 'react-relay'
-// import IsomorphicRelay from 'isomorphic-relay';
+
+// Relay deps
+import Relay from 'react-relay';
 import IsomorphicRouter from 'isomorphic-relay-router';
+// import IsomorphicRelay from 'isomorphic-relay';
 // import rootContainerProps from './rootContainerProps';
-import { createMemoryHistory, match, RouterContext } from 'react-router';
-import { StyleSheetServer } from 'aphrodite';
+
+// React Router deps
+import createMemoryHistory from 'react-router/lib/createMemoryHistory';
+import RouterContext from 'react-router/lib/RouterContext';
+import { syncHistoryWithStore } from 'react-router-redux';
+import { Provider } from 'react-redux';
 import { trigger } from 'redial';
+import { match } from 'react-router';
+
 // import { getRoutingContext, RouterResult } from './getRoutingContext';
+
+// Our deps
 import readJSON from './readJSON';
-
-
+import Html from '../../containers/Html';
 import config from '../../../config';
-// import { configureStore } from '../../store';
 import routes from '../../routes';
+import configureStore from '../../store';
 
 const { paths, globals: { __DEV__, __PROD__ }, host, graphQLPort } = config;
 
@@ -205,9 +216,9 @@ export default function renderClient(): Function {
                 <head>
                     <meta charset="utf-8">
                     <meta name="viewport" content="width=device-width, initial-scale=1">
-                    ${head.title.toString()}
-                    ${head.meta.toString()}
-                    ${head.link.toString()}
+                    ${ head.title.toString() }
+                    ${ head.meta.toString() }
+                    ${ head.link.toString() }
                     <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
                     <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
                     <!--[if lt IE 9]>
@@ -299,8 +310,16 @@ export default function renderClient(): Function {
         `;
     }
 
+    /*
+    const memoryHistory = createMemoryHistory(ctx.req.originalUrl);
+    const location = memoryHistory.createLocation(ctx.req.originalUrl);
+    const store = configureStore(memoryHistory);
+    const history = syncHistoryWithStore(memoryHistory, store);
+    */
+
     const { redirectLocation, renderProps } = await new Promise((resolve, reject) => {
       match({
+        // history,
         routes,
         location: ctx.req.url
       }, (err, redirectLocation, renderProps) => {
@@ -317,12 +336,34 @@ export default function renderClient(): Function {
     } else if (renderProps) {
       const stats = await readJSON(paths.dist('webpack-stats.json'));
       const { data, props } = await IsomorphicRouter.prepareData(renderProps, networkLayer);
+
       const preloadedData = JSON.stringify(data);
-      const reactOutput = ReactDOM.renderToString(IsomorphicRouter.render(props));
+      const component = IsomorphicRouter.render(props);
+
+      const reactOutput = ReactDOM.renderToString(
+        <Html
+          assets={ stats }
+          preloadedData = { preloadedData }
+          component={ component }
+        />
+      );
       const head = Helm.rewind();
 
+      /*
+      const component = (
+        <Provider store={ store } key="provider">
+          <RouterContext { ...renderProps } />
+        </Provider>
+      );
+
+      const reactOutput = ReactDOM.renderToString(
+        <Html assets={ webpackIsomorphicTools.assets() } component={ component } store={ store } />
+      );
+      */
+
       ctx.status = 200;
-      ctx.body = await render(reactOutput, preloadedData, head, stats);
+      // ctx.body = await render(reactOutput, preloadedData, head, stats);
+      ctx.body = '<!doctype html>\n' + reactOutput;
     }
 
     await next();

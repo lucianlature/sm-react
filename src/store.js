@@ -1,23 +1,27 @@
 import { createStore, applyMiddleware, compose } from 'redux';
-import thunk from 'redux-thunk';
-import axios from 'axios';
+import { routerMiddleware } from 'react-router-redux';
+import thunkMiddleware from 'redux-thunk';
 import createReducer from './createReducer';
-import DevTools from './containers/DevTools';
 
+export default function configureStore (history, initialState) {
+  // Redux middleware
+  const reduxRouterMiddleware = routerMiddleware(history);
+  const middleware = [ thunkMiddleware, reduxRouterMiddleware ];
 
-export function configureStore (initialState) {
-  let store = createStore(createReducer(), initialState, compose(
-    applyMiddleware(
-      thunk.withExtraArgument({ axios })
-    ),
+  // Development enhancers
+  const enhancers = [];
 
-    DevTools.instrument(),
+  if (__DEV__ && typeof window === 'object') {
+    const devToolsExtension = window.devToolsExtension;
+    if (typeof devToolsExtension === 'function') {
+      enhancers.push(devToolsExtension());
+    }
+  }
 
-    process.env.NODE_ENV === 'development' &&
-    typeof window === 'object' &&
-    typeof window.devToolsExtension !== 'undefined'
-      ? window.devToolsExtension()
-      : f => f
+  // Creating the store
+  const store = createStore(createReducer(), initialState, compose(
+    applyMiddleware(...middleware),
+    ...enhancers
   ));
 
   store.asyncReducers = {};

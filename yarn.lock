@@ -5700,7 +5700,7 @@ react-relay@^0.9.3:
     fbjs "^0.8.1"
     react-static-container "^1.0.1"
 
-react-router-redux@^4.0.5:
+react-router-redux:
   version "4.0.6"
   resolved "https://registry.yarnpkg.com/react-router-redux/-/react-router-redux-4.0.6.tgz#10cf98dce911d7dd912a05bdb07fee4d3c563dee"
 
@@ -5916,7 +5916,7 @@ redux-saga@^0.12.0:
   version "0.12.0"
   resolved "https://registry.yarnpkg.com/redux-saga/-/redux-saga-0.12.0.tgz#4b6145e6f8c33a6082f7d18f30ab5d2901e621e8"
 
-redux-thunk@^2.1.0:
+redux-thunk:
   version "2.1.0"
   resolved "https://registry.yarnpkg.com/redux-thunk/-/redux-thunk-2.1.0.tgz#c724bfee75dbe352da2e3ba9bc14302badd89a98"
 
