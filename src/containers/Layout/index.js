@@ -9,58 +9,37 @@ import Relay from 'react-relay';
 import Helmet from 'react-helmet';
 import Header from '../../components/Header';
 import Footer from '../../components/Footer';
-// import DevTools from '../../containers/DevTools';
+import { createDevTools } from 'redux-devtools';
+import LogMonitor from 'redux-devtools-log-monitor';
+import SliderMonitor from 'redux-slider-monitor';
+import DockMonitor from 'redux-devtools-dock-monitor';
+
+// import { DebugPanel, DevTools, LogMonitor } from 'redux-devtools/lib/react';
 import SidebarLeft from '../../components/SidebarLeft';
 import { StyleSheet, css } from 'aphrodite';
 
 class Layout extends React.Component {
-  static contextTypes = {
-    relay: Relay.PropTypes.Environment,
-  };
 
   render() {
+    const { collections } = this.props;
+    console.info(collections);
     return (
       <div className="wrapper">
         <Helmet title='SiteManager &ndash; ReactJS' titleTemplate='%s - Site manager v2' />
-        <Header />
-        <SidebarLeft />
-        <Footer />
+        <ol>
+            <li>
+              <h1>{collections.title} ({collections.slug})</h1>
+            </li>
+        </ol>
       </div>
     );
   }
 }
 
-const styles = StyleSheet.create({
-  root: {
-    maxWidth: 700,
-    color: '#000',
-    margin: '2rem auto',
-    padding: '0 1rem'
-  },
-  title: {
-    color: '#000',
-    maxWidth: 300,
-    fontWeight: 'bold',
-    fontSize: 56
-  },
-  footer: {
-    margin: '4rem auto',
-    textAlign: 'center',
-    color: '#b7b7b7'
-  },
-  footerLink: {
-    display: 'inline-block',
-    color: '#000',
-    textDecoration: 'none'
-  }
-});
-
-Layout.defaultProps = {};
-
 export default Relay.createContainer(Layout, {
   fragments: {
     collections: () => Relay.QL`
-      fragment on Collection {
+      fragment on Collection @relay(plural: true) {
         slug
         title
       }

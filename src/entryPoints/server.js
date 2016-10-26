@@ -1,2 +1,7 @@
-export { configureStore } from '../store';
-export routes from '../routes';
+import configureStore from '../store';
+import routes from '../routes';
+
+export {
+  configureStore,
+  routes
+}

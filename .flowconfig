@@ -1,57 +1,35 @@
-[ignore]
-.*\/node_modules\/.*\/fbjs\/.*
-.*\/node_modules\/.*\/invariant\/.*
-.*\/node_modules\/koa-static\/.*
-
 [include]
-./app/
-./data/
-./config/
+
+[ignore]
+
+# Including these files causes issues.
+.*/node_modules/fbjs/.*
+.*/node_modules/flow-remove-types/.*
+.*/node_modules/flow-coverage-report/.*
 
 [libs]
-./interfaces/
+
+# Official "flow-typed" repository definitions.
+flow-typed/npm
+
+# Custom definitions.
+tools/flow/definitions/
+
+# Note: the following definitions come bundled with flow. It can be handy
+# to reference them.
+# React: https://github.com/facebook/flow/blob/master/lib/react.js
+# Javascript: https://github.com/facebook/flow/blob/master/lib/core.js
+# Node: https://github.com/facebook/flow/blob/master/lib/node.js
+# DOM: https://github.com/facebook/flow/blob/master/lib/dom.js
+# BOM: https://github.com/facebook/flow/blob/master/lib/bom.js
+# CSSOM: https://github.com/facebook/flow/blob/master/lib/cssom.js
+# IndexDB: https://github.com/facebook/flow/blob/master/lib/indexeddb.js
 
 [options]
-esproposal.class_instance_fields=ignore
-esproposal.class_static_fields=ignore
-esproposal.decorators=ignore
 
-module.name_mapper='^.*\.css$' -> 'empty/object'
-module.name_mapper='^actions\/\(.*\)$' -> '<PROJECT_ROOT>/app/actions/\1'
-module.name_mapper='^actions$' -> '<PROJECT_ROOT>/app/actions'
-module.name_mapper='^components\/\(.*\)$' -> '<PROJECT_ROOT>/app/components/\1'
-module.name_mapper='^components$' -> '<PROJECT_ROOT>/app/components'
-module.name_mapper='^constants\/\(.*\)$' -> '<PROJECT_ROOT>/app/constants/\1'
-module.name_mapper='^constants$' -> '<PROJECT_ROOT>/app/constants'
-module.name_mapper='^containers\/\(.*\)$' -> '<PROJECT_ROOT>/app/containers/\1'
-module.name_mapper='^containers$' -> '<PROJECT_ROOT>/app/containers'
-module.name_mapper='^entryPoints\/\(.*\)$' -> '<PROJECT_ROOT>/app/entryPoints/\1'
-module.name_mapper='^entryPoints$' -> '<PROJECT_ROOT>/app/entryPoints'
-module.name_mapper='^reducers\/\(.*\)$' -> '<PROJECT_ROOT>/app/reducers/\1'
-module.name_mapper='^reducers$' -> '<PROJECT_ROOT>/app/reducers'
-module.name_mapper='^routes\/\(.*\)$' -> '<PROJECT_ROOT>/app/routes/\1'
-module.name_mapper='^routes$' -> '<PROJECT_ROOT>/app/routes'
-module.name_mapper='^store\/\(.*\)$' -> '<PROJECT_ROOT>/app/store/\1'
-module.name_mapper='^store$' -> '<PROJECT_ROOT>/app/store'
-module.name_mapper='^utils\/\(.*\)$' -> '<PROJECT_ROOT>/app/utils/\1'
-module.name_mapper='^utils$' -> '<PROJECT_ROOT>/app/utils'
-module.name_mapper='^views\/\(.*\)$' -> '<PROJECT_ROOT>/app/views/\1'
-module.name_mapper='^views$' -> '<PROJECT_ROOT>/app/views'
-module.name_mapper='^config\/\(.*\)$' -> '<PROJECT_ROOT>/config/\1'
-
-module.system=haste
-
-munge_underscores=true
-
-strip_root=true
-
-suppress_type=$FlowIssue
-suppress_type=$FlowFixMe
-suppress_type=$FixMe
-
-suppress_comment=\\(.\\|\n\\)*\\$FlowFixMe\\($\\|[^(]\\|(\\(>=0\\.\\(1[0-6]\\|[0-9]\\).[0-9]\\)? *\\(site=[a-z,_]*www[a-z,_]*\\)?)\\)
-suppress_comment=\\(.\\|\n\\)*\\$FlowIssue\\((\\(>=0\\.\\(1[0-6]\\|[0-9]\\).[0-9]\\)? *\\(site=[a-z,_]*www[a-z,_]*\\)?)\\)? #[0-9]+
-suppress_comment=\\(.\\|\n\\)*\\$FlowFixedInNextDeploy
+# This is so that we can import static files in our webpack supported components
+# and not have flow throw a hissy fit.
+module.name_mapper='^\(.*\)\.\(css\|eot\|gif\|ico\|jpg\|jpeg\|less\|otf\|mp3\|mp4\|ogg\|png\|sass\|scss\|sss\|svg\|swf\|ttf\|webp\|woff\|woff2\)$' -> '<PROJECT_ROOT>/tools/flow/stubs/WebpackAsset.js.flow'
 
 [version]
 0.33.0

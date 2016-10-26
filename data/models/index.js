@@ -7,7 +7,7 @@ import config from '../../config';
 
 const basename = path.basename(module.filename);
 const { database, globals: { __DEV__ } } = config;
-const dbConfig = database[ __DEV__ ? 'development' : 'production' ];
+const dbConfig = database[ 'development' ];
 
 let db = {};
 let sequelize;

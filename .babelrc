@@ -1,20 +1,6 @@
-{
-  "presets": [
-    "react",
-    "es2015",
-    "stage-0"
-  ],
-  "plugins": [
-    "babel-relay-plugin-loader",
-    "react-hot-loader/babel",
-    "transform-class-properties",
-    "transform-object-rest-spread",
-    "transform-async-to-generator",
-    "transform-decorators-legacy",
-    [ "transform-es2015-classes", { "loose": true } ],
-    "transform-runtime"
-  ],
-  "ignore": [
-    "node_modules"
-  ]
-}
+// We don't use the .babelrc file for our babel configuration, preferring for
+// our webpack loaders to have full control over the babel configuration.
+// This allows us to build up our babel config in a much more dynamic fashion
+// easily targetting a mix mash of server vs browser vs dev vs prod etc.
+// @see webpackConfigFactory.js
+{}

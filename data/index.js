@@ -9,8 +9,7 @@ const graphQLServer = new Koa();
 
 graphQLServer.use(convert(graphQLHTTP(request => ({
   schema: Schema,
-  pretty: true,
-  rootValue: { sid: request.headers.authorization }
+  pretty: true
 }))));
 
 export default graphQLServer;

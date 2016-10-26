@@ -122,7 +122,7 @@ export default class Html extends React.Component {
     const { assets, preloadedData, component } = this.props;
     const content = component ? ReactDOM.renderToString(component) : '';
     const head = Helmet.rewind();
-    // const preloadedState = store.getState();
+    const preloadedState = JSON.stringify({}/*store.getState()*/);
 
     return (
       <html lang="en-us">
@@ -136,6 +136,7 @@ export default class Html extends React.Component {
         <body className="hold-transition skin-blue sidebar-mini">
             <div id="root" dangerouslySetInnerHTML={ { __html: content } } />
             <script id="preloaded-data" type="application/json" dangerouslySetInnerHTML={ { __html: preloadedData } } />
+            <script id="preloaded-state" type="application/json" dangerouslySetInnerHTML={ { __html: preloadedState } } />
             <script key="dlls__vendor" src="/dll/dll.vendor.js" />
             <script async key="app" src={ "/build/" + assets.js[0] } charSet="UTF-8" />
         </body>

@@ -1,6 +1,5 @@
 // @flow
 
-import path from 'path';
 import Koa from 'koa';
 import compress from 'koa-compress';
 import favicon from 'koa-favicon';
@@ -29,7 +28,7 @@ if (__DEV__) {
   app.use(mount('/build', statics(paths.dist('client'))));
 }
 
-app.use(favicon(path.join(__dirname, '..', 'public', 'favicon.ico')));
+app.use(favicon(paths.public('favicon.ico')));
 app.use(statics(paths.public()));
 
 app.use(renderClient());
