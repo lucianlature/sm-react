@@ -5,6 +5,7 @@
 
 const notifier = require('node-notifier');
 const colors = require('colors');
+import loggerFor from './log';
 
 function createNotification(options = {}) {
   const title = options.title
@@ -19,12 +20,19 @@ function createNotification(options = {}) {
 
   const level = options.level || 'info';
   const msg = `==> ${title} -> ${options.message}`;
+  const log = loggerFor(title);
 
   switch (level) {
-    case 'warn': console.log(colors.red(msg)); break;
-    case 'error': console.log(colors.bgRed.white(msg)); break;
+    /*
+    case 'warn': log(colors.red(msg)); break;
+    case 'error': log(colors.bgRed.white(msg)); break;
     case 'info':
-    default: console.log(colors.green(msg));
+    default: log(colors.green(msg));
+    */
+    case 'warn': log(msg); break;
+    case 'error': log(msg); break;
+    case 'info':
+    default: log(msg);
   }
 }
 

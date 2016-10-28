@@ -6,10 +6,10 @@
 // server will then use the newly built version of our middleware bundle.
 // Having this wrapped version allows us to "dodge" webpack taking over the
 // module resolution.
-const universalDevMiddleware = (req, resp) => {
+const universalDevMiddleware = function(ctx, next) {
   const wrappedMiddleware = require('../../build/universalMiddleware').default;
 
-  wrappedMiddleware(req, resp);
+  wrappedMiddleware(ctx, next);
 };
 
 module.exports = universalDevMiddleware;

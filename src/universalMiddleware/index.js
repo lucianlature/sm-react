@@ -1,6 +1,6 @@
 /* @flow */
 
-import type { $Request, $Response, Middleware } from 'express';
+// import type { $Request, $Response, Middleware } from 'express';
 import React from 'react';
 import { ServerRouter, createServerRenderContext } from 'react-router';
 import render from './render';
@@ -9,7 +9,7 @@ import App from '../shared/universal/components/App';
 /**
  * An express middleware that is capabable of doing React server side rendering.
  */
-function universalReactAppMiddleware(request: $Request, response: $Response) {
+export default async function universalReactAppMiddleware(ctx, next) {
   if (process.env.DISABLE_SSR === 'true') {
     if (process.env.NODE_ENV === 'development') {
       console.log('==> Handling react route without SSR');  // eslint-disable-line no-console
@@ -17,7 +17,8 @@ function universalReactAppMiddleware(request: $Request, response: $Response) {
     // SSR is disabled so we will just return an empty html page and will
     // rely on the client to initialize and render the react application.
     const html = render();
-    response.status(200).send(html);
+    ctx.status = 200;
+    ctx.body = html;
     return;
   }
 
@@ -28,7 +29,7 @@ function universalReactAppMiddleware(request: $Request, response: $Response) {
   // Create the application react element.
   const app = (
     <ServerRouter
-      location={request.url}
+      location={ctx.request.url}
       context={context}
     >
       <App />
@@ -47,21 +48,21 @@ function universalReactAppMiddleware(request: $Request, response: $Response) {
   // Check if the render result contains a redirect, if so we need to set
   // the specific status and redirect header and end the response.
   if (renderResult.redirect) {
-    response.status(301).setHeader('Location', renderResult.redirect.pathname);
-    response.end();
+    ctx.status = 301;
+    ctx.setHeader('Location', renderResult.redirect.pathname);
+    ctx.end();
     return;
   }
 
-  response
-    .status(
+  ctx.status = (
       renderResult.missed
         // If the renderResult contains a "missed" match then we set a 404 code.
         // Our App component will handle the rendering of an Error404 view.
         ? 404
         // Otherwise everything is all good and we send a 200 OK status.
         : 200
-    )
-    .send(html);
-}
+    );
+  ctx.body = html;
 
-export default (universalReactAppMiddleware : Middleware);
+  await next();
+}

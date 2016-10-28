@@ -45,4 +45,6 @@ dist
 .module-cache
 *.log*
 _nogit
-.idea/
+.history
+.vscode
+.idea

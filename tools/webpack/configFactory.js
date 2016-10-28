@@ -3,14 +3,17 @@
 import path from 'path';
 import webpack from 'webpack';
 import AssetsPlugin from 'assets-webpack-plugin';
+import LogPlugin from './log.plugin';
 import nodeExternals from 'webpack-node-externals';
 import ExtractTextPlugin from 'extract-text-webpack-plugin';
 import appRoot from 'app-root-path';
 import WebpackMd5Hash from 'webpack-md5-hash';
 import { removeEmpty, ifElse, merge , happyPackPlugin } from '../utils';
 import envVars from '../config/envVars';
+import loggerFor from '../development/log';
 
 const appRootPath = appRoot.toString();
+const log = loggerFor('WEBPACK');
 
 function webpackConfigFactory({ target, mode }, { json }) {
   if (!target || ['client', 'server', 'universalMiddleware'].findIndex(valid => target === valid) === -1) {
@@ -41,7 +44,7 @@ function webpackConfigFactory({ target, mode }, { json }) {
     // And then upload the build/client/analysis.json to http://webpack.github.io/analyse/
     // This allows you to analyse your webpack bundle to make sure it is
     // optimal.
-    console.log(`==> Creating webpack config for "${target}" in "${mode}" mode`);
+    log(`==> Creating webpack config for "${target}" in "${mode}" mode`);
   }
 
   const isDev = mode === 'development';
@@ -239,6 +242,10 @@ function webpackConfigFactory({ target, mode }, { json }) {
       // kill our dev servers.
       ifDev(new webpack.NoErrorsPlugin()),
 
+      // We don't want webpack logs to occur during development as it will
+      // kill our dev servers.
+      // ifDev(new LogPlugin()),
+
       // We need this plugin to enable hot module reloading for our dev server.
       ifDevClient(new webpack.HotModuleReplacementPlugin()),
 
@@ -318,11 +325,16 @@ function webpackConfigFactory({ target, mode }, { json }) {
               ['latest', { es2015: { modules: false } }],
             ],
             plugins: removeEmpty([
+              // Rather than trying to build it’s own entirely separate ecosystem, 
+              // Flow hooks into the existing JavaScript ecosystem. 
+              // Using Babel to compile your code is one of the easiest ways to integrate Flow into a project.
+              'transform-flow-strip-types',
               // We are adding the experimental "object rest spread" syntax as
               // it is super useful.  There is a caviat with the plugin that
               // requires us to include the destructuring plugin too.
               'transform-object-rest-spread',
               'transform-es2015-destructuring',
+              'transform-async-to-generator',
               // The class properties plugin is really useful for react components.
               'transform-class-properties',
               // We use the code-split-component/babel plugin and only enable
@@ -341,8 +353,7 @@ function webpackConfigFactory({ target, mode }, { json }) {
             ]),
           },
         }],
-      }),
-
+      }), 
       // HappyPack 'css' instance for development client.
       ifDevClient(
         happyPackPlugin({

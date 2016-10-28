@@ -20,11 +20,11 @@ class HotDevelopment {
           })
         );
         this.clientCompiler = webpack(clientConfig);
-
+        
         const middlewareConfigFactory = require('../webpack/universalMiddleware.config');
         const middlewareConfig = middlewareConfigFactory({ mode: 'development' });
         this.middlewareCompiler = webpack(middlewareConfig);
-
+        
         const serverConfigFactory = require('../webpack/server.config');
         const serverConfig = serverConfigFactory({ mode: 'development' });
         this.serverCompiler = webpack(serverConfig);
@@ -32,9 +32,9 @@ class HotDevelopment {
         createNotification({
           title: 'development',
           level: 'error',
-          message: 'Webpack configs are invalid, please check the console for more information.',
+          message: 'Webpack configs are invalid, please check the error for more information.' + err,
         });
-        console.log(err);
+        // console.log(err);
         return;
       }
 
@@ -47,9 +47,9 @@ class HotDevelopment {
         level: 'error',
         message: 'Unfortunately an error occured whilst trying to build the vendor dll used by the development server. Please check the console for more information.',
       });
-      if (err) {
-        console.log(err);
-      }
+      //if (err) {
+      //  console.log(err);
+      //}
     });
   }
 
@@ -99,7 +99,7 @@ class HotDevelopment {
           level: 'error',
           message: 'Build failed, please check the console for more information.',
         });
-        console.log(stats.toString());
+        // console.log(stats.toString());
       }
     });
   }
@@ -112,7 +112,10 @@ class HotDevelopment {
     const startServerBundleWhenReady = () => {
       if (!started && (clientBuilt && middlewareBuilt)) {
         started = true;
-        this.serverBundle = new HotServer(this.serverCompiler);
+        this.serverBundle = new HotServer(this.serverCompiler, {
+          quiet: true,
+          noInfo: true
+        });
       }
     };
 

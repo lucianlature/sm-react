@@ -1,4 +1,5 @@
 import { createMonitor } from 'spawn-monitor';
+/*
 import config from './config';
 
 const { paths, globals } = config;
@@ -20,12 +21,12 @@ if (__DEV__) {
     script: paths.bin('graphql'),
     key: 'graphql',
   });
-
+*/
   createMonitor({
-    script: paths.bin('devServer'),
+    script: './tools/development',
     key: 'dev-server',
   });
-
+/*
   createMonitor({
     script: paths.bin('client'),
     key: 'client',
@@ -36,3 +37,4 @@ if (__DEV__) {
 //   script: './bin/test',
 //   key: 'test',
 // });
+*/

@@ -11,7 +11,7 @@ const ListenerManager = require('./listenerManager');
 const createNotification = require('./createNotification');
 
 class HotServer {
-  constructor(compiler) {
+  constructor(compiler, options) {
     this.listenerManager = null;
 
     const runCompiler = () => {
@@ -33,9 +33,9 @@ class HotServer {
         createNotification({
           title: 'server',
           level: 'error',
-          message: 'Build failed, check the console for more information.',
+          message: `Build failed: ${ stats.toString() }`,
         });
-        console.log(stats.toString());
+        // console.log(stats.toString());
         return;
       }
 
@@ -64,9 +64,9 @@ class HotServer {
         createNotification({
           title: 'server',
           level: 'error',
-          message: 'Failed to start, please check the console for more information.',
+          message: `Failed to start, please check the error for more information: ${err}`,
         });
-        console.log(err);
+        // console.log(err);
       }
     });
 

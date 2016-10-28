@@ -3,16 +3,20 @@
 /* eslint-disable no-underscore-dangle */
 /* eslint-disable import/no-extraneous-dependencies */
 
-const express = require('express');
-const createWebpackMiddleware = require('webpack-dev-middleware');
-const createWebpackHotMiddleware = require('webpack-hot-middleware');
+const Koa = require('koa');
+//const createWebpackMiddleware = require('webpack-dev-middleware');
+//const createWebpackHotMiddleware = require('webpack-hot-middleware');
+import { 
+  devMiddleware as createWebpackMiddleware, 
+  hotMiddleware as createWebpackHotMiddleware
+} from 'koa-webpack-middleware';
 const envVars = require('../config/envVars');
 const ListenerManager = require('./listenerManager');
 const createNotification = require('./createNotification');
 
 class HotClient {
   constructor(compiler) {
-    const app = express();
+    const app = new Koa();
 
     this.webpackDevMiddleware = createWebpackMiddleware(compiler, {
       quiet: true,
@@ -48,7 +52,7 @@ class HotClient {
           level: 'error',
           message: 'Build failed, please check the console for more information.',
         });
-        console.log(stats.toString());
+        // console.log(stats.toString());
       } else {
         createNotification({
           title: 'client',

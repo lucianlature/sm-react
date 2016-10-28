@@ -8,7 +8,9 @@ const recursive = promisify(require('recursive-readdir'));
 const appRootPath = require('app-root-path').toString();
 const vendorDLLPaths = require('../config/vendorDLLPaths');
 const createNotification = require('./createNotification');
+import loggerFor from './log';
 
+const log = loggerFor('VENDORDLL');
 // -----------------------------------------------------------------------------
 // PRIVATES
 
@@ -71,10 +73,11 @@ function buildVendorDLL() {
         level: 'info',
         message: 'Vendor DLL build complete. Check console for module list.',
       });
-      console.log([...modules]);
+      log([...modules]);
 
       const webpackConfig = webpackConfigFactory([...modules]);
       const vendorDLLCompiler = webpack(webpackConfig);
+      
       vendorDLLCompiler.run((err) => {
         if (err) {
           reject(err);
