@@ -4,15 +4,13 @@
 /* eslint-disable import/no-extraneous-dependencies */
 
 const Koa = require('koa');
-//const createWebpackMiddleware = require('webpack-dev-middleware');
-//const createWebpackHotMiddleware = require('webpack-hot-middleware');
 import { 
   devMiddleware as createWebpackMiddleware, 
   hotMiddleware as createWebpackHotMiddleware
 } from 'koa-webpack-middleware';
 const envVars = require('../config/envVars');
 const ListenerManager = require('./listenerManager');
-const createNotification = require('./createNotification');
+import { createNotification } from '../utils';
 
 class HotClient {
   constructor(compiler) {

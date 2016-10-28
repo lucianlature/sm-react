@@ -3,7 +3,7 @@
 /* eslint-disable no-underscore-dangle */
 /* eslint-disable import/no-extraneous-dependencies */
 
-const createNotification = require('./createNotification');
+import { createNotification } from '../utils';
 
 class ListenerManager {
   constructor(listener, name) {

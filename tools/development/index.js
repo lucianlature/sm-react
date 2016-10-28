@@ -1,7 +1,7 @@
 const pathResolve = require('path').resolve;
 const chokidar = require('chokidar');
 const webpack = require('webpack');
-const createNotification = require('./createNotification');
+import { createNotification } from '../utils';
 const HotServer = require('./hotServer');
 const HotClient = require('./hotClient');
 const ensureVendorDLLExists = require('./ensureVendorDLLExists');
@@ -32,9 +32,9 @@ class HotDevelopment {
         createNotification({
           title: 'development',
           level: 'error',
-          message: 'Webpack configs are invalid, please check the error for more information.' + err,
+          message: `Webpack configs are invalid: ${err}`
         });
-        // console.log(err);
+        console.error(err);
         return;
       }
 
@@ -45,7 +45,7 @@ class HotDevelopment {
       createNotification({
         title: 'vendorDLL',
         level: 'error',
-        message: 'Unfortunately an error occured whilst trying to build the vendor dll used by the development server. Please check the console for more information.',
+        message: `Unfortunately an error occured whilst trying to build the vendor dll used by the development server: ${err}`,
       });
       //if (err) {
       //  console.log(err);

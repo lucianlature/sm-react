@@ -54,13 +54,22 @@ app.use(helmet.noSniff());
 app.use(compress());
 
 // Configure static serving of our webpack bundled client files.
-
 app.use(mount(notEmpty(process.env.CLIENT_BUNDLE_HTTP_PATH), statics(path.resolve(appRootPath, notEmpty(process.env.BUNDLE_OUTPUT_PATH), './client')), {
   maxage: notEmpty(process.env.CLIENT_BUNDLE_CACHE_MAXAGE)
 }));
 
 // Configure static serving of our "public" root http path static files.
-app.use(mount('/public', statics(path.resolve(appRootPath, './public'))));
+app.use(statics(path.resolve(appRootPath, './public')));
+
+// When in production mode, bind our service worker folder so that it can
+// be served.
+// Note: the service worker needs to be available at the http root of your
+// application for the offline support to work.
+if (process.env.NODE_ENV === 'production') {
+  app.use(statics(
+    path.resolve(appRootPath, notEmpty(process.env.BUNDLE_OUTPUT_PATH), './serviceWorker')
+  ));
+}
 
 // The universal middleware for our React application.
 app.use(universalMiddleware);

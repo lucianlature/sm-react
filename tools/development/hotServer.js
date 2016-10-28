@@ -8,7 +8,7 @@ const path = require('path');
 const chokidar = require('chokidar');
 const envVars = require('../config/envVars');
 const ListenerManager = require('./listenerManager');
-const createNotification = require('./createNotification');
+import { createNotification } from '../utils';
 
 class HotServer {
   constructor(compiler, options) {

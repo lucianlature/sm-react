@@ -2,16 +2,18 @@
 
 import path from 'path';
 import webpack from 'webpack';
+import { sync as globSync } from 'glob';
+import SWPrecacheWebpackPlugin from 'sw-precache-webpack-plugin';
 import AssetsPlugin from 'assets-webpack-plugin';
-import LogPlugin from './log.plugin';
 import nodeExternals from 'webpack-node-externals';
 import ExtractTextPlugin from 'extract-text-webpack-plugin';
 import appRoot from 'app-root-path';
 import WebpackMd5Hash from 'webpack-md5-hash';
-import { removeEmpty, ifElse, merge , happyPackPlugin } from '../utils';
+import { removeEmpty, ifElse, merge , happyPackPlugin, loggerFor } from '../utils';
 import envVars from '../config/envVars';
-import loggerFor from '../development/log';
+import pkg from '../../package.json';
 
+const appName = pkg.name.replace('/ /g', '');
 const appRootPath = appRoot.toString();
 const log = loggerFor('WEBPACK');
 
@@ -44,7 +46,7 @@ function webpackConfigFactory({ target, mode }, { json }) {
     // And then upload the build/client/analysis.json to http://webpack.github.io/analyse/
     // This allows you to analyse your webpack bundle to make sure it is
     // optimal.
-    log(`==> Creating webpack config for "${target}" in "${mode}" mode`);
+    log(`🔩 Creating webpack config for "${target}" in "${mode}" mode`);
   }
 
   const isDev = mode === 'development';
@@ -54,9 +56,27 @@ function webpackConfigFactory({ target, mode }, { json }) {
   const isUniversalMiddleware = target === 'universalMiddleware';
   const isNodeTarget = isServer || isUniversalMiddleware;
 
+  // These are handy little helpers that use the boolean flags above.
+  // They allow you to wrap a value with an condition check. It the condition
+  // is met the value you provided will be returned, otherwise it will
+  // return null.
+  //
+  // For example, say our "isDev" flag had a value of `true`. Then when we used
+  // our helpers below we would get the following results:
+  //   ifDev('foo');  // => 'foo'
+  //   ifProd('foo'); // => null
+  //
+  // It also allows for a secondary argument, which will be used instead of the
+  // null when the condition is not met. For example:
+  //   ifDev('foo', 'bar');  // => 'foo'
+  //   ifProd('foo', 'bar'); // => 'bar'
+  //
+  // This is really handy for doing inline value resolution within or webpack
+  // configuration.  Then we simply use one of our utility functions (e.g.
+  // removeEmpty) to remove all the nulls.
   const ifNodeTarget = ifElse(isNodeTarget);
   const ifDev = ifElse(isDev);
-  const ifProd = ifElse(isProd);
+  const ifProd = ifElse(isProd); // eslint-disable-line no-unused-vars
   const ifClient = ifElse(isClient);
   const ifServer = ifElse(isServer);
   const ifDevServer = ifElse(isDev && isServer);
@@ -201,23 +221,16 @@ function webpackConfigFactory({ target, mode }, { json }) {
             // NOTE: The NODE_ENV key is especially important for production
             // builds as React relies on process.env.NODE_ENV for optimizations.
             'process.env.NODE_ENV': JSON.stringify(mode),
+            // Feel free to add any "dynamic" environment variables, to be
+            // created by this webpack script.  Below I am adding a "IS_NODE"
+            // environment variable which will allow our code to know if it's
+            // being bundled for a node target.
             'process.env.IS_NODE': JSON.stringify(isNodeTarget),
-            'process.env.USE_DLLS': JSON.stringify(process.env.USE_DLLS),
-            'process.env.HAPPY_CACHE': JSON.stringify(process.env.HAPPY_CACHE),
-            // NOTE: If you are providing any environment variables from the
-            // command line rather than the .env files then you must make sure
-            // you add them here so that webpack can use them in during the
-            // compiling process.
-            // e.g.
-            // 'process.env.MY_CUSTOM_VAR': JSON.stringify(process.env.MY_CUSTOM_VAR)
           },
-          // Now we will expose all of the .env config variables to webpack
+          // Now we will expose all of our environment variables to webpack
           // so that it can make all the subtitutions for us.
-          // Note: ALL of these values will be given as string types. Even if you
-          // set numeric/boolean looking values within your .env file. The parsing
-          // that we do of the .env file always returns the values as strings.
-          // Therefore in your code you may need to do operations like the
-          // following:
+          // Note: ALL of these values will be given as string types, therefore
+          // you may need to do operations like the following within your src:
           // const MY_NUMBER = parseInt(process.env.MY_NUMBER, 10);
           // const MY_BOOL = process.env.MY_BOOL === 'true';
           Object.keys(envVars).reduce((acc, cur) => {
@@ -291,6 +304,46 @@ function webpackConfigFactory({ target, mode }, { json }) {
         // This is a production client so we will extract our CSS into
         // CSS files.
         new ExtractTextPlugin({ filename: '[name]-[chunkhash].css', allChunks: true })
+      ),
+
+      // Service Worker.
+      // @see https://github.com/goldhand/sw-precache-webpack-plugin
+      // This plugin generates a service worker script which as configured below
+      // will precache all our generated client bundle assets as well as the
+      // index page for our application.
+      // This gives us aggressive caching as well as offline support.
+      // Don't worry about cache invalidation. As we are using the Md5HashPlugin
+      // for our assets, any time their contents change they will be given
+      // unique file names, which will cause the service worker to fetch them.
+      ifProdClient(
+        new SWPrecacheWebpackPlugin(
+          {
+            // Note: The default cache size is 2mb. This can be reconfigured:
+            // maximumFileSizeToCacheInBytes: 2097152,
+            cacheId: `${appName}-sw`,
+            filepath: path.resolve(envVars.BUNDLE_OUTPUT_PATH, './serviceWorker/sw.js'),
+            dynamicUrlToDependencies: (() => {
+              const clientBundleAssets = globSync(
+                path.resolve(appRootPath, envVars.BUNDLE_OUTPUT_PATH, './client/*.js')
+              );
+              return globSync(path.resolve(appRootPath, './public/*'))
+                .reduce((acc, cur) => {
+                  // We will precache our public asset, with it being invalidated
+                  // any time our client bundle assets change.
+                  acc[`/${path.basename(cur)}`] = clientBundleAssets; // eslint-disable-line no-param-reassign,max-len
+                  return acc;
+                },
+                {
+                  // Our index.html page will be precatched and it will be
+                  // invalidated and refetched any time our client bundle
+                  // assets change.
+                  '/': clientBundleAssets,
+                  // Lets cache the call to the polyfill.io service too.
+                  'https://cdn.polyfill.io/v2/polyfill.min.js': clientBundleAssets,
+                });
+            })(),
+          }
+        )
       ),
 
       // HappyPack plugins
