@@ -9,7 +9,7 @@ import nodeExternals from 'webpack-node-externals';
 import ExtractTextPlugin from 'extract-text-webpack-plugin';
 import appRoot from 'app-root-path';
 import WebpackMd5Hash from 'webpack-md5-hash';
-import { removeEmpty, ifElse, merge , happyPackPlugin, loggerFor } from '../utils';
+import { removeEmpty, ifElse, merge , happyPackPlugin, loggerFor, createNotification } from '../utils';
 import envVars from '../config/envVars';
 import pkg from '../../package.json';
 
@@ -46,7 +46,11 @@ function webpackConfigFactory({ target, mode }, { json }) {
     // And then upload the build/client/analysis.json to http://webpack.github.io/analyse/
     // This allows you to analyse your webpack bundle to make sure it is
     // optimal.
-    log(`🔩 Creating webpack config for "${target}" in "${mode}" mode`);
+    createNotification({
+      title: 'webpack',
+      level: 'info',
+      message: `🔩 Creating webpack config for "${target}" in "${mode}" mode`
+    });
   }
 
   const isDev = mode === 'development';

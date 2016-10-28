@@ -4,6 +4,7 @@ const webpack = require('webpack');
 import { createNotification } from '../utils';
 const HotServer = require('./hotServer');
 const HotClient = require('./hotClient');
+import GraphQLServer from './graphQLServer';
 const ensureVendorDLLExists = require('./ensureVendorDLLExists');
 const vendorDLLPaths = require('../config/vendorDLLPaths');
 
@@ -41,6 +42,7 @@ class HotDevelopment {
       this.prepHotServer();
       this.prepHotUniversalMiddleware();
       this.prepHotClient();
+      this.prepGraphQLServer();
     }).catch((err) => {
       createNotification({
         title: 'vendorDLL',
@@ -55,6 +57,10 @@ class HotDevelopment {
 
   prepHotClient() {
     this.clientBundle = new HotClient(this.clientCompiler);
+  }
+
+  prepGraphQLServer() {
+    this.graphQLServer = new GraphQLServer();
   }
 
   prepHotUniversalMiddleware() {

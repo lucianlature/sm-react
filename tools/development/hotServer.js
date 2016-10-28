@@ -27,7 +27,7 @@ class HotServer {
     const compiledOutputPath = path.resolve(
       compiler.options.output.path, `${Object.keys(compiler.options.entry)[0]}.js`
     );
-
+    
     compiler.plugin('done', (stats) => {
       if (stats.hasErrors()) {
         createNotification({
@@ -57,7 +57,7 @@ class HotServer {
         createNotification({
           title: 'server',
           level: 'info',
-          message: `Running on ${url} with latest changes.`,
+          message: `🚀 Running on ${url} with latest changes.`,
           open: url,
         });
       } catch (err) {

@@ -1,7 +1,6 @@
 const CPU_COUNT = require('os').cpus().length;
 const HappyPack = require('happypack');
 const notifier = require('node-notifier');
-const colors = require('colors');
 
 import chalk from 'chalk';
 import moment from 'moment';
@@ -61,17 +60,18 @@ function createNotification(options = {}) {
   });
 
   const level = options.level || 'info';
-  let msg = `🔸 ${title} -> ${options.message}`;
+  const titleBold = chalk[ colorCache[title] ].bold(title + ': ');
+  let msg = `🔸 ${titleBold} ${options.message}`;
 
   switch (level) {
-    case 'warn': log(colors.red(msg)); break;
+    case 'warn': log(chalk.red(msg)); break;
     case 'error': {
       msg = `${title} : ${options.message}`;
-      log('❗️ ' + colors.bgRed.white(msg)); 
+      log('❗️ ' + chalk.bgRed.white(msg)); 
       break;
     }
     case 'info':
-    default: log(colors.green(msg));
+    default: log(chalk.white(msg));
   }
 }
 
@@ -95,18 +95,17 @@ function timeDiff(type: string): string {
   return `+${diffString}`;
 };
 
-const logColors = ['red', 'green', 'yellow', 'blue', 'magenta'];
+const logColors = ['red', 'green', 'yellow', 'blue', 'magenta', 'cyan', 'white'];
 const colorCache = {};
 let colorIndex = logColors.length;
 
 function loggerFor(key) {
+    let color = colorCache[key];
+    if (!color) {
+        color = colorCache[key] = logColors[--colorIndex];
+    }
     return function log(message) {
-        let color = colorCache[key];
-        if (!color) {
-            color = colorCache[key] = logColors[--colorIndex];
-        }
         const bgColor = `bg${color.charAt(0).toUpperCase() + color.slice(1)}`;
-        
         message.toString().split('\n')
             .filter((line) => line.trim().length > 0)
             .forEach((line) => {
