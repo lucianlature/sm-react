@@ -6,6 +6,8 @@
 
 ## TOC
 
+[![Greenkeeper badge](https://badges.greenkeeper.io/lucianlature/sm-react.svg)](https://greenkeeper.io/)
+
  - [About](https://github.com/ctrlplusb/react-universally#about)
  - [Features](https://github.com/ctrlplusb/react-universally#features)
  - [Overview](https://github.com/ctrlplusb/react-universally#overview)
